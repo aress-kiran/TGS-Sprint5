@@ -1,0 +1,236 @@
+C:\Users\sumare\Documents\TGS\DEV\swyfftAuto\swyfftAuto\bin\Debug\swyfftAuto.exe.config
+C:\Users\sumare\Documents\TGS\DEV\swyfftAuto\swyfftAuto\bin\Debug\swyfftAuto.exe
+C:\Users\sumare\Documents\TGS\DEV\swyfftAuto\swyfftAuto\bin\Debug\swyfftAuto.pdb
+C:\Users\sumare\Documents\TGS\DEV\swyfftAuto\swyfftAuto\bin\Debug\EntityFramework.dll
+C:\Users\sumare\Documents\TGS\DEV\swyfftAuto\swyfftAuto\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\sumare\Documents\TGS\DEV\swyfftAuto\swyfftAuto\bin\Debug\itextsharp.dll
+C:\Users\sumare\Documents\TGS\DEV\swyfftAuto\swyfftAuto\bin\Debug\WebDriver.dll
+C:\Users\sumare\Documents\TGS\DEV\swyfftAuto\swyfftAuto\bin\Debug\WebDriver.Support.dll
+C:\Users\sumare\Documents\TGS\DEV\swyfftAuto\swyfftAuto\bin\Debug\EntityFramework.xml
+C:\Users\sumare\Documents\TGS\DEV\swyfftAuto\swyfftAuto\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\sumare\Documents\TGS\DEV\swyfftAuto\swyfftAuto\bin\Debug\itextsharp.xml
+C:\Users\sumare\Documents\TGS\DEV\swyfftAuto\swyfftAuto\bin\Debug\WebDriver.xml
+C:\Users\sumare\Documents\TGS\DEV\swyfftAuto\swyfftAuto\bin\Debug\WebDriver.Support.xml
+C:\Users\sumare\Documents\TGS\DEV\swyfftAuto\swyfftAuto\obj\Debug\swyfftAuto.exe
+C:\Users\sumare\Documents\TGS\DEV\swyfftAuto\swyfftAuto\obj\Debug\swyfftAuto.pdb
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\swyfftAuto\bin\Debug\swyfftAuto.exe.config
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\swyfftAuto\bin\Debug\swyfftAuto.exe
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\swyfftAuto\bin\Debug\swyfftAuto.pdb
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\swyfftAuto\bin\Debug\Bitbucket.Net.dll
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\swyfftAuto\bin\Debug\EntityFramework.dll
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\swyfftAuto\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\swyfftAuto\bin\Debug\Flurl.dll
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\swyfftAuto\bin\Debug\Flurl.Http.dll
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\swyfftAuto\bin\Debug\itextsharp.dll
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\swyfftAuto\bin\Debug\Newtonsoft.Json.dll
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\swyfftAuto\bin\Debug\Salesforce.Common.dll
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\swyfftAuto\bin\Debug\Salesforce.Force.dll
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\swyfftAuto\bin\Debug\System.Net.Http.Extensions.dll
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\swyfftAuto\bin\Debug\System.Net.Http.Primitives.dll
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\swyfftAuto\bin\Debug\WebDriver.dll
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\swyfftAuto\bin\Debug\WebDriver.Support.dll
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\swyfftAuto\bin\Debug\EntityFramework.xml
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\swyfftAuto\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\swyfftAuto\bin\Debug\Flurl.xml
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\swyfftAuto\bin\Debug\Flurl.Http.xml
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\swyfftAuto\bin\Debug\itextsharp.xml
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\swyfftAuto\bin\Debug\Newtonsoft.Json.xml
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\swyfftAuto\bin\Debug\System.Net.Http.Extensions.xml
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\swyfftAuto\bin\Debug\System.Net.Http.Primitives.xml
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\swyfftAuto\bin\Debug\WebDriver.xml
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\swyfftAuto\bin\Debug\WebDriver.Support.xml
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\swyfftAuto\obj\Debug\swyfftAuto.csproj.App.config
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\swyfftAuto\obj\Debug\swyfftAuto.exe
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\swyfftAuto\obj\Debug\swyfftAuto.pdb
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\tgs-swyfft-import-app\swyfftAuto\bin\Debug\swyfftAuto.exe.config
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\tgs-swyfft-import-app\swyfftAuto\obj\Debug\swyfftAuto.exe
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\tgs-swyfft-import-app\swyfftAuto\obj\Debug\swyfftAuto.pdb
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\tgs-swyfft-import-app\swyfftAuto\bin\Debug\swyfftAuto.exe
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\tgs-swyfft-import-app\swyfftAuto\bin\Debug\swyfftAuto.pdb
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\tgs-swyfft-import-app\swyfftAuto\bin\Debug\Bitbucket.Net.dll
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\tgs-swyfft-import-app\swyfftAuto\bin\Debug\EntityFramework.dll
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\tgs-swyfft-import-app\swyfftAuto\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\tgs-swyfft-import-app\swyfftAuto\bin\Debug\Flurl.dll
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\tgs-swyfft-import-app\swyfftAuto\bin\Debug\Flurl.Http.dll
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\tgs-swyfft-import-app\swyfftAuto\bin\Debug\itextsharp.dll
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\tgs-swyfft-import-app\swyfftAuto\bin\Debug\Newtonsoft.Json.dll
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\tgs-swyfft-import-app\swyfftAuto\bin\Debug\Salesforce.Common.dll
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\tgs-swyfft-import-app\swyfftAuto\bin\Debug\Salesforce.Force.dll
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\tgs-swyfft-import-app\swyfftAuto\bin\Debug\System.Net.Http.Extensions.dll
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\tgs-swyfft-import-app\swyfftAuto\bin\Debug\System.Net.Http.Primitives.dll
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\tgs-swyfft-import-app\swyfftAuto\bin\Debug\WebDriver.dll
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\tgs-swyfft-import-app\swyfftAuto\bin\Debug\WebDriver.Support.dll
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\tgs-swyfft-import-app\swyfftAuto\bin\Debug\EntityFramework.xml
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\tgs-swyfft-import-app\swyfftAuto\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\tgs-swyfft-import-app\swyfftAuto\bin\Debug\Flurl.xml
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\tgs-swyfft-import-app\swyfftAuto\bin\Debug\Flurl.Http.xml
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\tgs-swyfft-import-app\swyfftAuto\bin\Debug\itextsharp.xml
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\tgs-swyfft-import-app\swyfftAuto\bin\Debug\Newtonsoft.Json.xml
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\tgs-swyfft-import-app\swyfftAuto\bin\Debug\System.Net.Http.Extensions.xml
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\tgs-swyfft-import-app\swyfftAuto\bin\Debug\System.Net.Http.Primitives.xml
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\tgs-swyfft-import-app\swyfftAuto\bin\Debug\WebDriver.xml
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\tgs-swyfft-import-app\swyfftAuto\bin\Debug\WebDriver.Support.xml
+C:\Users\sumare\Documents\Projects for Git\swyfftAuto\tgs-swyfft-import-app\swyfftAuto\obj\Debug\swyfftAuto.csproj.App.config
+C:\Users\sumare\Documents\Projects for Git\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\swyfftAuto.exe.config
+C:\Users\sumare\Documents\Projects for Git\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.exe
+C:\Users\sumare\Documents\Projects for Git\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.pdb
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\swyfftAuto.exe.config
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\swyfftAuto.exe
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\swyfftAuto.pdb
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Bitbucket.Net.dll
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\EntityFramework.dll
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\EntityFramework.SqlServer.dll
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Flurl.dll
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Flurl.Http.dll
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\itextsharp.dll
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Newtonsoft.Json.dll
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Salesforce.Common.dll
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Salesforce.Force.dll
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\System.Net.Http.Extensions.dll
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\System.Net.Http.Primitives.dll
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\WebDriver.dll
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\WebDriver.Support.dll
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\EntityFramework.xml
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\EntityFramework.SqlServer.xml
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Flurl.xml
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Flurl.Http.xml
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\itextsharp.xml
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Newtonsoft.Json.xml
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\System.Net.Http.Extensions.xml
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\System.Net.Http.Primitives.xml
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\WebDriver.xml
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\WebDriver.Support.xml
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.csproj.App.config
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.csprojAssemblyReference.cache
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.csproj.CoreCompileInputs.cache
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.csproj.CopyComplete
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.exe
+E:\Kiran\ProjectDocs\ASP.Net\TheGoSolutions\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.pdb
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\swyfftAuto.exe.config
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\swyfftAuto.exe
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\swyfftAuto.pdb
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Bitbucket.Net.dll
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\EntityFramework.dll
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Flurl.dll
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Flurl.Http.dll
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\itextsharp.dll
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Newtonsoft.Json.dll
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Salesforce.Common.dll
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Salesforce.Force.dll
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\System.Net.Http.Extensions.dll
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\System.Net.Http.Primitives.dll
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\WebDriver.dll
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\WebDriver.Support.dll
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\EntityFramework.xml
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Flurl.xml
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Flurl.Http.xml
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\itextsharp.xml
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Newtonsoft.Json.xml
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\System.Net.Http.Extensions.xml
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\System.Net.Http.Primitives.xml
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\WebDriver.xml
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\WebDriver.Support.xml
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.csproj.App.config
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.csproj.CoreCompileInputs.cache
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.csproj.CopyComplete
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.exe
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.pdb
+C:\Users\user\Desktop\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.csprojAssemblyReference.cache
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\swyfftAuto.exe.config
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\swyfftAuto.exe
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\swyfftAuto.pdb
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Bitbucket.Net.dll
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\EntityFramework.dll
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\EntityFramework.SqlServer.dll
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Flurl.dll
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Flurl.Http.dll
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\itextsharp.dll
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Newtonsoft.Json.dll
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Salesforce.Common.dll
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Salesforce.Force.dll
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\System.Net.Http.Extensions.dll
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\System.Net.Http.Primitives.dll
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\WebDriver.dll
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\WebDriver.Support.dll
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\EntityFramework.xml
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\EntityFramework.SqlServer.xml
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Flurl.xml
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Flurl.Http.xml
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\itextsharp.xml
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Newtonsoft.Json.xml
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\System.Net.Http.Extensions.xml
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\System.Net.Http.Primitives.xml
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\WebDriver.xml
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\WebDriver.Support.xml
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.csproj.App.config
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.csprojAssemblyReference.cache
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.csproj.CoreCompileInputs.cache
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.csproj.CopyComplete
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.exe
+D:\LIVE PROJECTS\ASP.NET\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.pdb
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\swyfftAuto.exe.config
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\swyfftAuto.exe
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\swyfftAuto.pdb
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Bitbucket.Net.dll
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\EntityFramework.dll
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\EntityFramework.SqlServer.dll
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Flurl.dll
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Flurl.Http.dll
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\itextsharp.dll
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Newtonsoft.Json.dll
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Salesforce.Common.dll
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Salesforce.Force.dll
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\System.Net.Http.Extensions.dll
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\System.Net.Http.Primitives.dll
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\WebDriver.dll
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\WebDriver.Support.dll
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\EntityFramework.xml
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\EntityFramework.SqlServer.xml
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Flurl.xml
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Flurl.Http.xml
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\itextsharp.xml
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Newtonsoft.Json.xml
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\System.Net.Http.Extensions.xml
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\System.Net.Http.Primitives.xml
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\WebDriver.xml
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\WebDriver.Support.xml
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.csproj.App.config
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.csprojAssemblyReference.cache
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.csproj.CoreCompileInputs.cache
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.csproj.CopyComplete
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.exe
+D:\SwyfftAuto\wetransfer-fdac23\wetransfer-fdac23\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.pdb
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\swyfftAuto.exe.config
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\swyfftAuto.exe
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\swyfftAuto.pdb
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Bitbucket.Net.dll
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\EntityFramework.dll
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\EntityFramework.SqlServer.dll
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Flurl.dll
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Flurl.Http.dll
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\itextsharp.dll
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Newtonsoft.Json.dll
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Salesforce.Common.dll
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Salesforce.Force.dll
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\System.Net.Http.Extensions.dll
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\System.Net.Http.Primitives.dll
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\WebDriver.dll
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\WebDriver.Support.dll
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\EntityFramework.xml
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\EntityFramework.SqlServer.xml
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Flurl.xml
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Flurl.Http.xml
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\itextsharp.xml
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Newtonsoft.Json.xml
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\System.Net.Http.Extensions.xml
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\System.Net.Http.Primitives.xml
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\WebDriver.xml
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\WebDriver.Support.xml
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.csproj.App.config
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.csprojAssemblyReference.cache
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.csproj.CoreCompileInputs.cache
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.csproj.CopyComplete
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.exe
+D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.pdb
