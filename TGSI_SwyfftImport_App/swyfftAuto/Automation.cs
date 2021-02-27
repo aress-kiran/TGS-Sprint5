@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
+using swyfftAuto.com.salesforce.enterprise;
 using swyfftAuto.Model;
 using swyfftAuto.Model.Enums;
 using swyfftAuto.Model.SalesForceModels;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net;
 using System.Threading;
 
 namespace swyfftAuto
@@ -410,56 +412,205 @@ namespace swyfftAuto
 
         private static void GetSalesforceDetails(SwyfftRawData cust, string term, string priorTerm, DateTime expirationDate, string city, string state, string zipCode)
         {
-            Account account = new Account()
+            string salesForceUserName = ConfigurationManager.AppSettings["SalesForceUserName"].ToString();
+            string salesForcePsw = ConfigurationManager.AppSettings["SalesForcePsw"].ToString();
+            string salesForceToken = ConfigurationManager.AppSettings["SalesForceToken"].ToString();
+
+            SforceService sfdcBinding = new SforceService();
+            LoginResult currentLoginResult = null;
+            currentLoginResult = sfdcBinding.login(salesForceUserName, salesForcePsw + salesForceToken);
+
+            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+            sfdcBinding.Url = currentLoginResult.serverUrl;
+            sfdcBinding.SessionHeaderValue = new SessionHeader
             {
-                Name = cust.CustName,
-                BillingAddress = cust.Address,
-                BillingCountry = null,
-                RecordType = RecordType.Person.ToString()
+                sessionId = currentLoginResult.sessionId
             };
 
-            Property property = new Property()
+            var account = new com.salesforce.enterprise.Account
             {
-                Account = cust.CustName,
-                Address = cust.Address,
-                City = city,
-                State = state,
-                Zipcode = zipCode
+                //Name
+                Name = "SAP111111"
             };
 
-            Contact contact = new Contact()
+            //Billing Address // Billing Country
+            account.BillingAddress.city = "city";
+            account.BillingAddress.country = "country";
+            account.BillingAddress.countryCode = "countryCode";
+            account.BillingAddress.postalCode = "";
+            account.BillingAddress.state = "xxx";
+            account.BillingAddress.stateCode = "xxx";
+            account.BillingAddress.street = "xxx";
+            account.RecordType.Name = "RecordType";
+
+            var contact = new com.salesforce.enterprise.Contact
             {
-                Name = cust.CustName,
-                MailingAddress = null,
-                MailingAddressWithCountry = null,
-                RecordType = RecordType.Insured.ToString()
+                Name = "name"
+            };
+            contact.MailingAddress.city = "city";
+            contact.MailingAddress.country = "country";
+            contact.MailingAddress.countryCode = "countryCode";
+            contact.MailingAddress.postalCode = "postalCode";
+            contact.MailingAddress.state = "state";
+            contact.MailingAddress.stateCode = "stateCode";
+            contact.MailingAddress.street = "street";
+
+            var tGS_Property__C = new TGS_Property__c
+            {
+                TGS_Account__r = account,
+                TGS_Property_Address_2__c = "address",
+                TGS_City__c = "City",
+                TGS_State__c = "State",
+                TGS_Zip_Code__c = "Zip_Code"
             };
 
-            PolicyModel policy = new PolicyModel()
+            //Policy
+            //Carrier
+            var tGS_Carrier__C = new TGS_Carrier__c();
+
+            //Carrier Product
+            var tGS_CarrierProduct__C = new TGS_CarrierProduct__c();
+
+            var tGS_Quote_Policy__C = new com.salesforce.enterprise.TGS_Quote_Policy__c
             {
-                Account = cust.CustName,
-                Contact = null,
-                Property = null,
-                Carrier = "Swyfft",
-                CarrierProduct = "Swyfft-Home",
-                RecordType = RecordType.Policy.ToString(),
-                ProductType = null,
-                PolicyNumber = cust.PolicyNumber,
-                BillingFrequency = cust.billing_frequency,
-                TypeOfBilling = cust.TypeofBilling,
-                BillingMethod = cust.BillingMethod,
-                Premium = cust.Amount,
-                PolicyType = PolicyType.New.ToString(),
-                Status = Status.Issued.ToString(),  // to be confirmed
-                TGSIStatus = TGSIStatus.Active.ToString(), // to be confirmed
-                EffectiveDate = Convert.ToDateTime(cust.EftDate),
-                ExpirationDate = expirationDate,
-                CancellationDate = DateTime.Now, // to be implemented
-                Term = term,
-                PriorTerm = priorTerm,
-                PriorPolicyNumber = cust.PolicyNumber, // to be confirmed
-                NextPolicyNumber = null,
+                TGS_Account__r = account,
+                TGS_Contact__r = contact,
+                TGS_Property__r = tGS_Property__C,
+                TGS_Carrier__r = tGS_Carrier__C,
+                TGS_Carrier_Product__r = tGS_CarrierProduct__C
             };
+
+            tGS_Quote_Policy__C.RecordType.Name = "RecorType name";
+            tGS_Quote_Policy__C.TGS_Product_Type__c = "Product Type (Homeowners)";
+            tGS_Quote_Policy__C.TGS_Policy_Number__c = "Policy_Number";
+            tGS_Quote_Policy__C.TGS_Billing_Frequency__c = "Billing frequency";
+            tGS_Quote_Policy__C.Type_of_Billing__c = "Type of Billing";
+            tGS_Quote_Policy__C.TGS_Billing_Method__c = "Billing Method";
+
+            //need to confirm which salesforce object need to be used for Premium
+            tGS_Quote_Policy__C.TGS_Net_Premium__c = 1000.00; //Premium ?
+            tGS_Quote_Policy__C.TGS_Total_Billable_Premium__c = 1000.00; //Premium ?
+            tGS_Quote_Policy__C.TGS_Annualized_Premium__c = 1000.00; //Premium ?
+            tGS_Quote_Policy__C.TGS_Total_Commissionable_Premium__c = 1000.00; //Premium ?
+
+            tGS_Quote_Policy__C.TGS_Policy_Type__c = "Policy Type";
+            tGS_Quote_Policy__C.TGS_Policy_Status__c = "Status";
+            tGS_Quote_Policy__C.TGS_TGSI_Status__c = "TGSI Status";
+
+            DateTime effectiveDate = new DateTime();
+            DateTime.TryParse("27/02/2021", out effectiveDate);
+            tGS_Quote_Policy__C.TGS_Effective_Date__c = effectiveDate;
+
+            DateTime expDate = new DateTime();
+            DateTime.TryParse("27/02/2021", out expDate);
+            tGS_Quote_Policy__C.TGS_Expiration_Date__c = expDate;
+
+            DateTime cancellationDate = new DateTime();
+            DateTime.TryParse("27/02/2021", out cancellationDate);
+            tGS_Quote_Policy__C.TGS_Cancellation_Date__c = cancellationDate;
+
+            tGS_Quote_Policy__C.TGS_Next_Term__c = "Term"; ///// need to confirm the salesforce object name ?
+            tGS_Quote_Policy__C.TGS_RenewalTerm__c = "Prior Term"; ///// need to confirm the salesforce object name ?
+
+            tGS_Quote_Policy__C.TGS_Prior_PolicyNumber__c = "Prior Policy Number";
+            tGS_Quote_Policy__C.TGS_Bundle_PolicyNumber__c = "Next Policy Number"; ///// need to confirm the salesforce object name ?
+
+            SaveResult[] insertResults = sfdcBinding.create(new sObject[] { tGS_Quote_Policy__C });
+
+            for (int i = 0; i < insertResults.Length; i++)
+            {
+                if (insertResults[i].success)
+                {
+                    Console.WriteLine(string.Concat("Successfully created ID: ", insertResults[i].id));
+                }
+                else
+                {
+                    Console.WriteLine(string.Concat("Error: could not create sobject for array element ", i, "."));
+                    Console.WriteLine(string.Concat("The error reported was: ", insertResults[i].errors[0].message, "\n"));
+                }
+            }
+
+            //Code to update the record by fetching the values from salesforce
+            QueryResult queryResult = null;
+            string SOQL = string.Format("select TGS_Billing_Frequency__c, Type_of_Billing__c from TGS_Quote_Policy__c WHERE TGS_Policy_Number__c = '{0}'", "Policy_Number");
+            queryResult = sfdcBinding.query(SOQL);
+            //update
+
+            if (queryResult.size > 0)
+            {
+                for (int i = 0; i < queryResult.records.Length; i++)
+                {
+                    var tGS_Quote_Policy__c_1 = (com.salesforce.enterprise.TGS_Quote_Policy__c)queryResult.records[i];
+                    tGS_Quote_Policy__c_1.TGS_Account__r = account;
+                    tGS_Quote_Policy__c_1.TGS_Billing_Frequency__c = "";
+                    tGS_Quote_Policy__c_1.Type_of_Billing__c = "";
+                    SaveResult[] UpdateResults = sfdcBinding.update(new sObject[] { tGS_Quote_Policy__c_1 });
+
+                    for (int j = 0; j < UpdateResults.Length; i++)
+                    {
+                        if (insertResults[i].success)
+                        {
+                            Console.WriteLine(string.Concat("Successfully Updated ID: ", UpdateResults[j].id));
+                        }
+                        else
+                        {
+                            Console.WriteLine(string.Concat("Error: could not create sobject for array element ", j, "."));
+                            Console.WriteLine(string.Concat("The error reported was: ", UpdateResults[j].errors[0].message, "\n"));
+                        }
+                    }
+                }
+            }
+
+            //Account account = new Account()
+            //{
+            //    Name = cust.CustName,
+            //    BillingAddress = cust.Address,
+            //    BillingCountry = null,
+            //    RecordType = RecordType.Person.ToString()
+            //};
+
+            //Property property = new Property()
+            //{
+            //    Account = cust.CustName,
+            //    Address = cust.Address,
+            //    City = city,
+            //    State = state,
+            //    Zipcode = zipCode
+            //};
+
+            //Contact contact = new Contact()
+            //{
+            //    Name = cust.CustName,
+            //    MailingAddress = null,
+            //    MailingAddressWithCountry = null,
+            //    RecordType = RecordType.Insured.ToString()
+            //};
+
+            //PolicyModel policy = new PolicyModel()
+            //{
+            //    Account = cust.CustName,
+            //    Contact = null,
+            //    Property = null,
+            //    Carrier = "Swyfft",
+            //    CarrierProduct = "Swyfft-Home",
+            //    RecordType = RecordType.Policy.ToString(),
+            //    ProductType = null,
+            //    PolicyNumber = cust.PolicyNumber,
+            //    BillingFrequency = cust.billing_frequency,
+            //    TypeOfBilling = cust.TypeofBilling,
+            //    BillingMethod = cust.BillingMethod,
+            //    Premium = cust.Amount,
+            //    PolicyType = PolicyType.New.ToString(),
+            //    Status = Status.Issued.ToString(),  // to be confirmed
+            //    TGSIStatus = TGSIStatus.Active.ToString(), // to be confirmed
+            //    EffectiveDate = Convert.ToDateTime(cust.EftDate),
+            //    ExpirationDate = expirationDate,
+            //    CancellationDate = DateTime.Now, // to be implemented
+            //    Term = term,
+            //    PriorTerm = priorTerm,
+            //    PriorPolicyNumber = cust.PolicyNumber, // to be confirmed
+            //    NextPolicyNumber = null,
+            //};
         }
 
         #endregion
@@ -731,12 +882,12 @@ namespace swyfftAuto
                                 }
                                 else
                                 {
-                                    Account account = new Account()
+                                    var account = new Model.SalesForceModels.Account()
                                     {
                                         Name = cust.CustName,
                                         BillingAddress = cust.Address,
                                         BillingCountry = null,
-                                        RecordType = RecordType.Person.ToString()
+                                        RecordType = Model.Enums.RecordType.Person.ToString()
                                     };
 
                                     Property property = new Property()
@@ -748,12 +899,12 @@ namespace swyfftAuto
                                         Zipcode = zipCode
                                     };
 
-                                    Contact contact = new Contact()
+                                    var contact = new Model.SalesForceModels.Contact()
                                     {
                                         Name = cust.CustName,
                                         MailingAddress = null,
                                         MailingAddressWithCountry = null,
-                                        RecordType = RecordType.Insured.ToString()
+                                        RecordType = Model.Enums.RecordType.Insured.ToString()
                                     };
 
                                     policy.Account = cust.CustName;
@@ -761,7 +912,7 @@ namespace swyfftAuto
                                     policy.Property = null;
                                     policy.Carrier = "Swyfft";
                                     policy.CarrierProduct = "Swyfft-Home";
-                                    policy.RecordType = RecordType.Policy.ToString();
+                                    policy.RecordType = Model.Enums.RecordType.Policy.ToString();
                                     policy.ProductType = null;
                                     policy.PolicyNumber = cust.PolicyNumber;
                                     policy.BillingFrequency = cust.billing_frequency;
