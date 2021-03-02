@@ -91,6 +91,7 @@ namespace swyfftAuto
                 var rows = table.FindElements(By.TagName("tr"));
                 //Thread.Sleep(2000);
                 Iswyfft si = new Policy();
+
                 foreach (var row in rows)
                 {
                     var rowTds = row.FindElements(By.TagName("td"));
@@ -269,8 +270,9 @@ namespace swyfftAuto
 
                     if (flag)
                     {
-                        var lst = si.readfiles();
-                        foreach (var item in lst)
+                        var downloadedFiles = si.readfiles();
+
+                        foreach (var item in downloadedFiles)
                         {
                             if (item.IndexOf("Invoice") >= 0)
                             {
@@ -315,10 +317,19 @@ namespace swyfftAuto
 
                             priorTerm = GetPriorTerm(cust);
 
-                            //insert record in salesforce
+                            var policyStatus = cust.StatusText.ToLower().Trim().Contains("issued") ? Status.Issued.ToString() : "";
+                            policyStatus = cust.StatusText.ToLower().Trim().Contains("cancelled") ? Status.Cancelled.ToString() : "";
+
+                            var policy = GetPolicyDetails(cust, term, priorTerm, policyType, city, state, zipCode, expirationDate, policyStatus);
+
+                            // Insert record
                             if (policyType.Trim().ToLower() == PolicyType.New.ToString().ToLower())
                             {
-                                GetSalesforceDetails(cust, term, priorTerm, expirationDate, city, state, zipCode);
+                                SaveSalesforceDetails(policy, Process.Insert);
+                            }
+                            else if (policyType.Trim().ToLower() == PolicyType.Renewal.ToString().ToLower())
+                            {
+                                SaveSalesforceDetails(policy, Process.Update);
                             }
 
                             //delete downloaded files after saving
@@ -340,6 +351,61 @@ namespace swyfftAuto
                 driver.Close();
                 driver.Quit();
             }
+        }
+
+        private static PolicyModel GetPolicyDetails(SwyfftRawData cust, string term, string priorTerm, string policyType, string city, string state, string zipCode, DateTime expirationDate, string policyStatus)
+        {
+            var policy = new PolicyModel()
+            {
+                Account = new Model.SalesForceModels.Account()
+                {
+                    Name = cust.CustName,
+                    BillingAddress = cust.Address,
+                    BillingCountry = null,
+                    RecordType = Model.Enums.RecordType.Person.ToString()
+                },
+                Contact = new Model.SalesForceModels.Contact()
+                {
+                    Name = cust.CustName,
+                    MailingAddress = null,
+                    MailingAddressWithCountry = null,
+                    RecordType = Model.Enums.RecordType.Insured.ToString()
+                },
+                Property = new Property()
+                {
+                    Account = new Model.SalesForceModels.Account()
+                    {
+                        Name = cust.CustName,
+                        BillingAddress = cust.Address,
+                        BillingCountry = null,
+                        RecordType = Model.Enums.RecordType.Person.ToString()
+                    },
+                    Address = cust.Address,
+                    City = city,
+                    State = state,
+                    Zipcode = zipCode
+                },
+                Carrier = "Swyfft",
+                CarrierProduct = "Swyfft-Home",
+                RecordType = Model.Enums.RecordType.Policy.ToString(),
+                ProductType = null,
+                PolicyNumber = cust.PolicyNumber,
+                BillingFrequency = cust.billing_frequency,
+                TypeOfBilling = cust.TypeofBilling,
+                BillingMethod = cust.BillingMethod,
+                Premium = cust.Amount,
+                PolicyType = policyType,
+                Status = policyStatus,
+                TGSIStatus = TGSIStatus.Active.ToString(), // to be confirmed
+                EffectiveDate = Convert.ToDateTime(cust.EftDate),
+                ExpirationDate = expirationDate,
+                CancellationDate = DateTime.Now, // to be implemented
+                Term = term,
+                PriorTerm = priorTerm,
+                PriorPolicyNumber = "",
+                NextPolicyNumber = "",
+            };
+            return policy;
         }
 
         private static string GetPriorTerm(SwyfftRawData cust)
@@ -410,7 +476,7 @@ namespace swyfftAuto
             }
         }
 
-        private static void GetSalesforceDetails(SwyfftRawData cust, string term, string priorTerm, DateTime expirationDate, string city, string state, string zipCode)
+        private static void SaveSalesforceDetails(PolicyModel policy, Process process)
         {
             string salesForceUserName = ConfigurationManager.AppSettings["SalesForceUserName"].ToString();
             string salesForcePsw = ConfigurationManager.AppSettings["SalesForcePsw"].ToString();
@@ -560,57 +626,6 @@ namespace swyfftAuto
                     }
                 }
             }
-
-            //Account account = new Account()
-            //{
-            //    Name = cust.CustName,
-            //    BillingAddress = cust.Address,
-            //    BillingCountry = null,
-            //    RecordType = RecordType.Person.ToString()
-            //};
-
-            //Property property = new Property()
-            //{
-            //    Account = cust.CustName,
-            //    Address = cust.Address,
-            //    City = city,
-            //    State = state,
-            //    Zipcode = zipCode
-            //};
-
-            //Contact contact = new Contact()
-            //{
-            //    Name = cust.CustName,
-            //    MailingAddress = null,
-            //    MailingAddressWithCountry = null,
-            //    RecordType = RecordType.Insured.ToString()
-            //};
-
-            //PolicyModel policy = new PolicyModel()
-            //{
-            //    Account = cust.CustName,
-            //    Contact = null,
-            //    Property = null,
-            //    Carrier = "Swyfft",
-            //    CarrierProduct = "Swyfft-Home",
-            //    RecordType = RecordType.Policy.ToString(),
-            //    ProductType = null,
-            //    PolicyNumber = cust.PolicyNumber,
-            //    BillingFrequency = cust.billing_frequency,
-            //    TypeOfBilling = cust.TypeofBilling,
-            //    BillingMethod = cust.BillingMethod,
-            //    Premium = cust.Amount,
-            //    PolicyType = PolicyType.New.ToString(),
-            //    Status = Status.Issued.ToString(),  // to be confirmed
-            //    TGSIStatus = TGSIStatus.Active.ToString(), // to be confirmed
-            //    EffectiveDate = Convert.ToDateTime(cust.EftDate),
-            //    ExpirationDate = expirationDate,
-            //    CancellationDate = DateTime.Now, // to be implemented
-            //    Term = term,
-            //    PriorTerm = priorTerm,
-            //    PriorPolicyNumber = cust.PolicyNumber, // to be confirmed
-            //    NextPolicyNumber = null,
-            //};
         }
 
         #endregion
@@ -811,6 +826,7 @@ namespace swyfftAuto
                     {
 
                         var lst = si.readfiles();
+
                         foreach (var item in lst)
                         {
                             if (item.IndexOf("Invoice") >= 0)
@@ -859,8 +875,6 @@ namespace swyfftAuto
 
                             GetInvoiceDetails(cust, ref policyType, ref city, ref zipCode, ref expirationDate, invoiceDetails);
 
-                            PolicyModel policy = new PolicyModel();
-
                             // to be confirmed
                             if (cust.billing_frequency == "1-Pay")
                             {
@@ -873,64 +887,22 @@ namespace swyfftAuto
 
                             priorTerm = GetPriorTerm(cust);
 
-                            if (policyType.Trim().ToLower() == PolicyType.Renewal.ToString().ToLower())
+                            var policyStatus = cust.StatusText.ToLower().Trim().Contains("issued") ? Status.Issued.ToString() : "";
+                            policyStatus = cust.StatusText.ToLower().Trim().Contains("cancelled") ? Status.Cancelled.ToString() : "";
+
+                            var policy = GetPolicyDetails(cust, term, priorTerm, policyType, city, state, zipCode, expirationDate, policyStatus);
+
+                            // Update record
+                            if (policyStatus == Status.Cancelled.ToString())
                             {
-                                if (cust.StatusText.ToLower() == Status.Cancelled.ToString().ToLower())
-                                {
-                                    policy.TGSIStatus = TGSIStatus.Cancel.ToString();
-                                    policy.CancellationDate = DateTime.Now;
-                                }
-                                else
-                                {
-                                    var account = new Model.SalesForceModels.Account()
-                                    {
-                                        Name = cust.CustName,
-                                        BillingAddress = cust.Address,
-                                        BillingCountry = null,
-                                        RecordType = Model.Enums.RecordType.Person.ToString()
-                                    };
-
-                                    Property property = new Property()
-                                    {
-                                        Account = cust.CustName,
-                                        Address = cust.Address,
-                                        City = city,
-                                        State = state,
-                                        Zipcode = zipCode
-                                    };
-
-                                    var contact = new Model.SalesForceModels.Contact()
-                                    {
-                                        Name = cust.CustName,
-                                        MailingAddress = null,
-                                        MailingAddressWithCountry = null,
-                                        RecordType = Model.Enums.RecordType.Insured.ToString()
-                                    };
-
-                                    policy.Account = cust.CustName;
-                                    policy.Contact = null;
-                                    policy.Property = null;
-                                    policy.Carrier = "Swyfft";
-                                    policy.CarrierProduct = "Swyfft-Home";
-                                    policy.RecordType = Model.Enums.RecordType.Policy.ToString();
-                                    policy.ProductType = null;
-                                    policy.PolicyNumber = cust.PolicyNumber;
-                                    policy.BillingFrequency = cust.billing_frequency;
-                                    policy.TypeOfBilling = cust.TypeofBilling;
-                                    policy.BillingMethod = cust.BillingMethod;
-                                    policy.Premium = cust.Amount;
-                                    policy.PolicyType = PolicyType.Endorsement.ToString();
-                                    policy.Status = Status.Issued.ToString();  // to be confirmed
-                                    policy.TGSIStatus = TGSIStatus.Active.ToString(); // to be confirmed
-                                    policy.EffectiveDate = Convert.ToDateTime(cust.EftDate);
-                                    policy.ExpirationDate = expirationDate;
-                                    policy.CancellationDate = DateTime.Now; // to be implemented
-                                    policy.Term = term;
-                                    policy.PriorTerm = priorTerm;
-                                    policy.PriorPolicyNumber = cust.PolicyNumber; // to be confirmed
-                                    policy.NextPolicyNumber = null;
-                                }
+                                policy.TGSIStatus = TGSIStatus.Cancel.ToString();
+                                policy.CancellationDate = DateTime.Now;
                             }
+
+                            // TGSIStatus TO DO (Cancel)
+
+                            SaveSalesforceDetails(policy, Process.Update);
+
                             //delete file from temporary folder
                             si.deletefiles();
                         }

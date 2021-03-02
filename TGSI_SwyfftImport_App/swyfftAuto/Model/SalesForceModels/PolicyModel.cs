@@ -5,9 +5,9 @@ namespace swyfftAuto.Model.SalesForceModels
     public class PolicyModel
     {
         public int Id { get; set; }
-        public string Account { get; set; }
-        public string Contact { get; set; }
-        public string Property { get; set; }
+        public Account Account { get; set; }
+        public Contact Contact { get; set; }
+        public Property Property { get; set; }
         public string Carrier { get; set; }
         public string CarrierProduct { get; set; }
         public string RecordType { get; set; }

@@ -33,4 +33,10 @@
         Policy_1,
         Policy_2
     }
+
+    public enum Process
+    {
+        Insert,
+        Update
+    }
 }
