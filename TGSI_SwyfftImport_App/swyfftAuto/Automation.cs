@@ -88,7 +88,8 @@ namespace swyfftAuto
                 //Log.Write("It is main program ---" + adr.RecID);
                 var table = driver.FindElement(By.TagName("table"));
                 Thread.Sleep(1000);
-                var rows = table.FindElements(By.TagName("tr"));
+                var rowsFull = table.FindElements(By.TagName("tr"));
+                var rows = rowsFull.Where(s => s.Text.Contains(string.Concat(DateTime.Now.Month, "/", DateTime.Now.Day, "/", DateTime.Now.Year)));
                 //Thread.Sleep(2000);
                 Iswyfft si = new Policy();
 
@@ -496,38 +497,32 @@ namespace swyfftAuto
             var account = new com.salesforce.enterprise.Account
             {
                 //Name
-                Name = "SAP111111"
+                Name = policy.Account.Name
             };
 
             //Billing Address // Billing Country
-            account.BillingAddress.city = "city";
-            account.BillingAddress.country = "country";
-            account.BillingAddress.countryCode = "countryCode";
-            account.BillingAddress.postalCode = "";
-            account.BillingAddress.state = "xxx";
-            account.BillingAddress.stateCode = "xxx";
-            account.BillingAddress.street = "xxx";
-            account.RecordType.Name = "RecordType";
+            account.BillingAddress.city = policy.Property.City;
+            account.BillingAddress.country = "country"; // Not given in the PDF
+            account.BillingAddress.postalCode = policy.Property.Zipcode;
+            account.BillingAddress.state = policy.Property.State;
+            account.RecordType.Name = policy.RecordType; // To be confirm
 
             var contact = new com.salesforce.enterprise.Contact
             {
-                Name = "name"
+                Name = policy.Contact.Name
             };
-            contact.MailingAddress.city = "city";
-            contact.MailingAddress.country = "country";
-            contact.MailingAddress.countryCode = "countryCode";
-            contact.MailingAddress.postalCode = "postalCode";
-            contact.MailingAddress.state = "state";
-            contact.MailingAddress.stateCode = "stateCode";
-            contact.MailingAddress.street = "street";
+            contact.MailingAddress.city = policy.Property.City;
+            //contact.MailingAddress.country = "country"; // Not given in the PDF
+            contact.MailingAddress.postalCode = policy.Property.Zipcode;
+            contact.MailingAddress.state = policy.Property.State;
 
             var tGS_Property__C = new TGS_Property__c
             {
                 TGS_Account__r = account,
-                TGS_Property_Address_2__c = "address",
-                TGS_City__c = "City",
-                TGS_State__c = "State",
-                TGS_Zip_Code__c = "Zip_Code"
+                TGS_Property_Address_2__c = account.BillingAddress.ToString(),
+                TGS_City__c = policy.Property.City,
+                TGS_State__c = policy.Property.State,
+                TGS_Zip_Code__c = policy.Property.Zipcode
             };
 
             //Policy
@@ -546,37 +541,32 @@ namespace swyfftAuto
                 TGS_Carrier_Product__r = tGS_CarrierProduct__C
             };
 
-            tGS_Quote_Policy__C.RecordType.Name = "RecorType name";
+            tGS_Quote_Policy__C.RecordType.Name = policy.RecordType;
             tGS_Quote_Policy__C.TGS_Product_Type__c = "Product Type (Homeowners)";
-            tGS_Quote_Policy__C.TGS_Policy_Number__c = "Policy_Number";
-            tGS_Quote_Policy__C.TGS_Billing_Frequency__c = "Billing frequency";
-            tGS_Quote_Policy__C.Type_of_Billing__c = "Type of Billing";
-            tGS_Quote_Policy__C.TGS_Billing_Method__c = "Billing Method";
+            tGS_Quote_Policy__C.TGS_Policy_Number__c = policy.PolicyNumber;
+            tGS_Quote_Policy__C.TGS_Billing_Frequency__c = policy.BillingFrequency;
+            tGS_Quote_Policy__C.Type_of_Billing__c = policy.TypeOfBilling;
+            tGS_Quote_Policy__C.TGS_Billing_Method__c = policy.BillingMethod;
 
             //need to confirm which salesforce object need to be used for Premium
-            tGS_Quote_Policy__C.TGS_Net_Premium__c = 1000.00; //Premium ?
-            tGS_Quote_Policy__C.TGS_Total_Billable_Premium__c = 1000.00; //Premium ?
-            tGS_Quote_Policy__C.TGS_Annualized_Premium__c = 1000.00; //Premium ?
-            tGS_Quote_Policy__C.TGS_Total_Commissionable_Premium__c = 1000.00; //Premium ?
+            tGS_Quote_Policy__C.TGS_Net_Premium__c = Convert.ToDouble(policy.Premium); //Premium ?
+            tGS_Quote_Policy__C.TGS_Total_Billable_Premium__c = Convert.ToDouble(policy.Premium); //Premium ?
+            tGS_Quote_Policy__C.TGS_Annualized_Premium__c = Convert.ToDouble(policy.Premium); //Premium ?
+            tGS_Quote_Policy__C.TGS_Total_Commissionable_Premium__c = Convert.ToDouble(policy.Premium); //Premium ?
 
-            tGS_Quote_Policy__C.TGS_Policy_Type__c = "Policy Type";
-            tGS_Quote_Policy__C.TGS_Policy_Status__c = "Status";
-            tGS_Quote_Policy__C.TGS_TGSI_Status__c = "TGSI Status";
+            tGS_Quote_Policy__C.TGS_Policy_Type__c = policy.PolicyType;
+            tGS_Quote_Policy__C.TGS_Policy_Status__c = policy.Status;
+            tGS_Quote_Policy__C.TGS_TGSI_Status__c = policy.TGSIStatus;
 
-            DateTime effectiveDate = new DateTime();
-            DateTime.TryParse("27/02/2021", out effectiveDate);
-            tGS_Quote_Policy__C.TGS_Effective_Date__c = effectiveDate;
+            
+            tGS_Quote_Policy__C.TGS_Effective_Date__c = policy.EffectiveDate;
 
-            DateTime expDate = new DateTime();
-            DateTime.TryParse("27/02/2021", out expDate);
-            tGS_Quote_Policy__C.TGS_Expiration_Date__c = expDate;
+            tGS_Quote_Policy__C.TGS_Expiration_Date__c = policy.ExpirationDate;
 
-            DateTime cancellationDate = new DateTime();
-            DateTime.TryParse("27/02/2021", out cancellationDate);
-            tGS_Quote_Policy__C.TGS_Cancellation_Date__c = cancellationDate;
+            tGS_Quote_Policy__C.TGS_Cancellation_Date__c = policy.CancellationDate;
 
-            tGS_Quote_Policy__C.TGS_Next_Term__c = "Term"; ///// need to confirm the salesforce object name ?
-            tGS_Quote_Policy__C.TGS_RenewalTerm__c = "Prior Term"; ///// need to confirm the salesforce object name ?
+            tGS_Quote_Policy__C.TGS_Next_Term__c = policy.Term; ///// need to confirm the salesforce object name ?
+            tGS_Quote_Policy__C.TGS_RenewalTerm__c = policy.Term; ///// need to confirm the salesforce object name ?
 
             tGS_Quote_Policy__C.TGS_Prior_PolicyNumber__c = "Prior Policy Number";
             tGS_Quote_Policy__C.TGS_Bundle_PolicyNumber__c = "Next Policy Number"; ///// need to confirm the salesforce object name ?
@@ -645,7 +635,10 @@ namespace swyfftAuto
                 //Log.Write("It is main program ---" + adr.RecID);
                 var table = driver.FindElement(By.TagName("table"));
                 Thread.Sleep(1000);
-                var rows = table.FindElements(By.TagName("tr"));
+                
+                var rowsFull = table.FindElements(By.TagName("tr"));
+                var rows = rowsFull.Where(s => s.Text.Contains(string.Concat(DateTime.Now.Month, "/", DateTime.Now.Day, "/", DateTime.Now.Year)));
+
                 //Thread.Sleep(2000);
                 Iswyfft si = new Policy();
 
