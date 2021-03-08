@@ -1,7 +1,9 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
-using swyfftAuto.com.salesforce.enterprise;
+using Salesforce.Common;
+using Salesforce.Force;
+//using swyfftAuto.com.salesforce.enterprise;
 using swyfftAuto.Model;
 using swyfftAuto.Model.Enums;
 using swyfftAuto.Model.SalesForceModels;
@@ -11,6 +13,7 @@ using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using static swyfftAuto.Program;
 
 namespace swyfftAuto
 {
@@ -326,11 +329,13 @@ namespace swyfftAuto
                             // Insert record
                             if (policyType.Trim().ToLower() == PolicyType.New.ToString().ToLower())
                             {
-                                SaveSalesforceDetails(policy, Process.Insert);
+                                //SaveSalesforceDetails(policy, Process.Insert);
+                                ConnectSalesforceDetails(policy, Process.Insert);
                             }
                             else if (policyType.Trim().ToLower() == PolicyType.Renewal.ToString().ToLower())
                             {
-                                SaveSalesforceDetails(policy, Process.Update);
+                                //SaveSalesforceDetails(policy, Process.Update);
+                                ConnectSalesforceDetails(policy, Process.Insert);
                             }
 
                             //delete downloaded files after saving
@@ -351,6 +356,143 @@ namespace swyfftAuto
                 ScanEndoredTab(driver);
                 driver.Close();
                 driver.Quit();
+            }
+        }
+
+        private void ConnectSalesforceDetails(PolicyModel policy, Process process)
+        {
+            try
+            {
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11;
+
+                //set OAuth key and secret variables. You can find below two details after you create a Connected App in Salesforce
+                string sfdcCustomentKey = "3MVG9KsVczVNcM8yQQIoTGjDxF1LKPGn58EA.GEiVfEob6ryRWMP3pn01Nm_hdC_uVafs5vnd03r5h5wZ0f_v";
+                string sfdcCustomerSecret = "CC6D85F12E776F7A267110D052F3A8D89C4D6D27EE1DAD40918F50DB701F5312";
+
+                //set to Force.com user account that has API access enabled
+                string sfdcUserName = ConfigurationManager.AppSettings["SalesForceUserName"].ToString();
+                string sfdcPassword = ConfigurationManager.AppSettings["SalesForcePsw"].ToString();
+                string sfdcToken = ConfigurationManager.AppSettings["SalesForceToken"].ToString();
+
+                AuthenticationClient auth = new AuthenticationClient();
+                string IsSandboxUser = "true";
+
+                // Authenticate with Salesforce
+                Console.WriteLine("Authenticating with Salesforce");
+                var url = IsSandboxUser.Equals("true", StringComparison.CurrentCultureIgnoreCase)
+                    ? "https://test.salesforce.com/services/oauth2/token"
+                    : "https://login.salesforce.com/services/oauth2/token";
+
+                AsyncHelper.RunSync(() => auth.UsernamePasswordAsync(sfdcCustomentKey, sfdcCustomerSecret, sfdcUserName, sfdcPassword + sfdcToken, url));
+                ForceClient client = new ForceClient(auth.InstanceUrl, auth.AccessToken, "v45.0");
+
+                if (process.ToString().ToLower().Equals("insert"))
+                {
+                    Console.WriteLine("Insert");
+                    InsertSalesforceDetails(policy, client);
+                }
+                else if (process.ToString().ToLower().Equals("update"))
+                {
+                    Console.WriteLine("Update");
+                }
+
+                Console.WriteLine("Connected");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            
+        }
+
+        private void InsertSalesforceDetails(PolicyModel policy, ForceClient client)
+        {
+
+            try
+            {
+
+            var address = new com.salesforce.enterprise.address();
+            address.city = policy.Property.City;
+            //address.country = "country"; // Not given in the PDF
+            address.postalCode = policy.Property.Zipcode;
+            address.state = policy.Property.State;
+
+            var recordType = new com.salesforce.enterprise.RecordType();
+            recordType.Name = policy.Account.RecordType; // To be confirm
+
+            var account = new com.salesforce.enterprise.Account();
+
+            account.Name = policy.Account.Name;
+            account.BillingAddress = address;
+            account.RecordType = recordType;
+
+            var contact = new com.salesforce.enterprise.Contact
+            {
+                Name = policy.Contact.Name,
+                MailingAddress = address
+                //RecordType(Insured) // Need to confirm the object name
+            };
+            
+            var tGS_Property__C = new com.salesforce.enterprise.TGS_Property__c
+            {
+                TGS_Account__r = account,
+                TGS_Property_Address_2__c = address.ToString(),
+                TGS_City__c = policy.Property.City,
+                TGS_State__c = policy.Property.State,
+                TGS_Zip_Code__c = policy.Property.Zipcode
+            };
+
+                //Policy
+                //Carrier
+                //var tGS_Carrier__C = new com.salesforce.enterprise.TGS_Carrier__c();
+
+                //Carrier Product
+                //var tGS_CarrierProduct__C = new com.salesforce.enterprise.TGS_CarrierProduct__c();
+
+            var tGS_Quote_Policy__C = new TGS_Quote_Policy__c
+            {
+                Name = "Test polcies",
+                //TGS_Account__r = account,
+                //TGS_Contact__r = contact,
+                //TGS_Property__r = tGS_Property__C,
+                ////TGS_Carrier__r = tGS_Carrier__C,
+                ////TGS_Carrier_Product__r = tGS_CarrierProduct__C
+                //RecordType = recordType,
+                //TGS_Product_Type__c = policy.ProductType,
+                TGS_Policy_Number__c = policy.PolicyNumber,
+                //TGS_Billing_Frequency__c = policy.BillingFrequency,
+                //Type_of_Billing__c = policy.TypeOfBilling,
+                //TGS_Billing_Method__c = policy.BillingMethod,
+
+                ////need to confirm which salesforce object need to be used for Premium
+                //TGS_Net_Premium__c = Convert.ToDouble(policy.Premium), //Premium ?
+                TGS_Total_Billable_Premium__c = Convert.ToDouble(policy.Premium), //Premium ?
+                TGS_Annualized_Premium__c = Convert.ToDouble(policy.Premium), //Premium ?
+                TGS_Total_Commissionable_Premium__c = Convert.ToDouble(policy.Premium), //Premium ?
+
+                //TGS_Policy_Type__c = policy.PolicyType,
+                TGS_Policy_Status__c = policy.Status,
+                TGS_TGSI_Status__c = policy.TGSIStatus,
+                TGS_Effective_Date__c = policy.EffectiveDate,
+                TGS_Expiration_Date__c = policy.ExpirationDate,
+                TGS_Cancellation_Date__c = policy.CancellationDate,
+
+                //TGS_Next_Term__c = policy.Term, ///// need to confirm the salesforce object name ?
+                //TGS_RenewalTerm__c = policy.Term, ///// need to confirm the salesforce object name ?
+
+                //TGS_Prior_PolicyNumber__c = policy.PriorPolicyNumber, ///// need to confirm the salesforce object name
+                //TGS_Bundle_PolicyNumber__c = policy.NextPolicyNumber, ///// need to confirm the salesforce object name
+
+                
+            };
+
+            var result = AsyncHelper.RunSync(() => client.CreateAsync("TGS_Quote_Policy__c", tGS_Quote_Policy__C));
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -477,145 +619,146 @@ namespace swyfftAuto
             }
         }
 
-        private static void SaveSalesforceDetails(PolicyModel policy, Process process)
+        //Code to connect to sales force via WSDl
+        private static void SaveSalesforceDetails(PolicyModel policy)
         {
-            string salesForceUserName = ConfigurationManager.AppSettings["SalesForceUserName"].ToString();
-            string salesForcePsw = ConfigurationManager.AppSettings["SalesForcePsw"].ToString();
-            string salesForceToken = ConfigurationManager.AppSettings["SalesForceToken"].ToString();
+            //string salesForceUserName = ConfigurationManager.AppSettings["SalesForceUserName"].ToString();
+            //string salesForcePsw = ConfigurationManager.AppSettings["SalesForcePsw"].ToString();
+            //string salesForceToken = ConfigurationManager.AppSettings["SalesForceToken"].ToString();
 
-            SforceService sfdcBinding = new SforceService();
-            LoginResult currentLoginResult = null;
-            currentLoginResult = sfdcBinding.login(salesForceUserName, salesForcePsw + salesForceToken);
+            //SforceService sfdcBinding = new SforceService();
+            //LoginResult currentLoginResult = null;
+            //currentLoginResult = sfdcBinding.login(salesForceUserName, salesForcePsw + salesForceToken);
 
-            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
-            sfdcBinding.Url = currentLoginResult.serverUrl;
-            sfdcBinding.SessionHeaderValue = new SessionHeader
-            {
-                sessionId = currentLoginResult.sessionId
-            };
+            //System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+            //sfdcBinding.Url = currentLoginResult.serverUrl;
+            //sfdcBinding.SessionHeaderValue = new SessionHeader
+            //{
+            //    sessionId = currentLoginResult.sessionId
+            //};
 
-            var account = new com.salesforce.enterprise.Account
-            {
-                //Name
-                Name = policy.Account.Name
-            };
+            //var account = new com.salesforce.enterprise.Account
+            //{
+            //    //Name
+            //    Name = policy.Account.Name
+            //};
 
-            //Billing Address // Billing Country
-            account.BillingAddress.city = policy.Property.City;
-            account.BillingAddress.country = "country"; // Not given in the PDF
-            account.BillingAddress.postalCode = policy.Property.Zipcode;
-            account.BillingAddress.state = policy.Property.State;
-            account.RecordType.Name = policy.RecordType; // To be confirm
+            ////Billing Address // Billing Country
+            //account.BillingAddress.city = policy.Property.City;
+            //account.BillingAddress.country = "country"; // Not given in the PDF
+            //account.BillingAddress.postalCode = policy.Property.Zipcode;
+            //account.BillingAddress.state = policy.Property.State;
+            //account.RecordType.Name = policy.RecordType; // To be confirm
 
-            var contact = new com.salesforce.enterprise.Contact
-            {
-                Name = policy.Contact.Name
-            };
-            contact.MailingAddress.city = policy.Property.City;
-            //contact.MailingAddress.country = "country"; // Not given in the PDF
-            contact.MailingAddress.postalCode = policy.Property.Zipcode;
-            contact.MailingAddress.state = policy.Property.State;
+            //var contact = new com.salesforce.enterprise.Contact
+            //{
+            //    Name = policy.Contact.Name
+            //};
+            //contact.MailingAddress.city = policy.Property.City;
+            ////contact.MailingAddress.country = "country"; // Not given in the PDF
+            //contact.MailingAddress.postalCode = policy.Property.Zipcode;
+            //contact.MailingAddress.state = policy.Property.State;
 
-            var tGS_Property__C = new TGS_Property__c
-            {
-                TGS_Account__r = account,
-                TGS_Property_Address_2__c = account.BillingAddress.ToString(),
-                TGS_City__c = policy.Property.City,
-                TGS_State__c = policy.Property.State,
-                TGS_Zip_Code__c = policy.Property.Zipcode
-            };
+            //var tGS_Property__C = new TGS_Property__c
+            //{
+            //    TGS_Account__r = account,
+            //    TGS_Property_Address_2__c = account.BillingAddress.ToString(),
+            //    TGS_City__c = policy.Property.City,
+            //    TGS_State__c = policy.Property.State,
+            //    TGS_Zip_Code__c = policy.Property.Zipcode
+            //};
 
-            //Policy
-            //Carrier
-            var tGS_Carrier__C = new TGS_Carrier__c();
+            ////Policy
+            ////Carrier
+            //var tGS_Carrier__C = new TGS_Carrier__c();
 
-            //Carrier Product
-            var tGS_CarrierProduct__C = new TGS_CarrierProduct__c();
+            ////Carrier Product
+            //var tGS_CarrierProduct__C = new TGS_CarrierProduct__c();
 
-            var tGS_Quote_Policy__C = new com.salesforce.enterprise.TGS_Quote_Policy__c
-            {
-                TGS_Account__r = account,
-                TGS_Contact__r = contact,
-                TGS_Property__r = tGS_Property__C,
-                TGS_Carrier__r = tGS_Carrier__C,
-                TGS_Carrier_Product__r = tGS_CarrierProduct__C
-            };
+            //var tGS_Quote_Policy__C = new com.salesforce.enterprise.TGS_Quote_Policy__c
+            //{
+            //    TGS_Account__r = account,
+            //    TGS_Contact__r = contact,
+            //    TGS_Property__r = tGS_Property__C,
+            //    TGS_Carrier__r = tGS_Carrier__C,
+            //    TGS_Carrier_Product__r = tGS_CarrierProduct__C
+            //};
 
-            tGS_Quote_Policy__C.RecordType.Name = policy.RecordType;
-            tGS_Quote_Policy__C.TGS_Product_Type__c = "Product Type (Homeowners)";
-            tGS_Quote_Policy__C.TGS_Policy_Number__c = policy.PolicyNumber;
-            tGS_Quote_Policy__C.TGS_Billing_Frequency__c = policy.BillingFrequency;
-            tGS_Quote_Policy__C.Type_of_Billing__c = policy.TypeOfBilling;
-            tGS_Quote_Policy__C.TGS_Billing_Method__c = policy.BillingMethod;
+            //tGS_Quote_Policy__C.RecordType.Name = policy.RecordType;
+            //tGS_Quote_Policy__C.TGS_Product_Type__c = "Product Type (Homeowners)";
+            //tGS_Quote_Policy__C.TGS_Policy_Number__c = policy.PolicyNumber;
+            //tGS_Quote_Policy__C.TGS_Billing_Frequency__c = policy.BillingFrequency;
+            //tGS_Quote_Policy__C.Type_of_Billing__c = policy.TypeOfBilling;
+            //tGS_Quote_Policy__C.TGS_Billing_Method__c = policy.BillingMethod;
 
-            //need to confirm which salesforce object need to be used for Premium
-            tGS_Quote_Policy__C.TGS_Net_Premium__c = Convert.ToDouble(policy.Premium); //Premium ?
-            tGS_Quote_Policy__C.TGS_Total_Billable_Premium__c = Convert.ToDouble(policy.Premium); //Premium ?
-            tGS_Quote_Policy__C.TGS_Annualized_Premium__c = Convert.ToDouble(policy.Premium); //Premium ?
-            tGS_Quote_Policy__C.TGS_Total_Commissionable_Premium__c = Convert.ToDouble(policy.Premium); //Premium ?
+            ////need to confirm which salesforce object need to be used for Premium
+            //tGS_Quote_Policy__C.TGS_Net_Premium__c = Convert.ToDouble(policy.Premium); //Premium ?
+            //tGS_Quote_Policy__C.TGS_Total_Billable_Premium__c = Convert.ToDouble(policy.Premium); //Premium ?
+            //tGS_Quote_Policy__C.TGS_Annualized_Premium__c = Convert.ToDouble(policy.Premium); //Premium ?
+            //tGS_Quote_Policy__C.TGS_Total_Commissionable_Premium__c = Convert.ToDouble(policy.Premium); //Premium ?
 
-            tGS_Quote_Policy__C.TGS_Policy_Type__c = policy.PolicyType;
-            tGS_Quote_Policy__C.TGS_Policy_Status__c = policy.Status;
-            tGS_Quote_Policy__C.TGS_TGSI_Status__c = policy.TGSIStatus;
+            //tGS_Quote_Policy__C.TGS_Policy_Type__c = policy.PolicyType;
+            //tGS_Quote_Policy__C.TGS_Policy_Status__c = policy.Status;
+            //tGS_Quote_Policy__C.TGS_TGSI_Status__c = policy.TGSIStatus;
 
             
-            tGS_Quote_Policy__C.TGS_Effective_Date__c = policy.EffectiveDate;
+            //tGS_Quote_Policy__C.TGS_Effective_Date__c = policy.EffectiveDate;
 
-            tGS_Quote_Policy__C.TGS_Expiration_Date__c = policy.ExpirationDate;
+            //tGS_Quote_Policy__C.TGS_Expiration_Date__c = policy.ExpirationDate;
 
-            tGS_Quote_Policy__C.TGS_Cancellation_Date__c = policy.CancellationDate;
+            //tGS_Quote_Policy__C.TGS_Cancellation_Date__c = policy.CancellationDate;
 
-            tGS_Quote_Policy__C.TGS_Next_Term__c = policy.Term; ///// need to confirm the salesforce object name ?
-            tGS_Quote_Policy__C.TGS_RenewalTerm__c = policy.Term; ///// need to confirm the salesforce object name ?
+            //tGS_Quote_Policy__C.TGS_Next_Term__c = policy.Term; ///// need to confirm the salesforce object name ?
+            //tGS_Quote_Policy__C.TGS_RenewalTerm__c = policy.Term; ///// need to confirm the salesforce object name ?
 
-            tGS_Quote_Policy__C.TGS_Prior_PolicyNumber__c = "Prior Policy Number";
-            tGS_Quote_Policy__C.TGS_Bundle_PolicyNumber__c = "Next Policy Number"; ///// need to confirm the salesforce object name ?
+            //tGS_Quote_Policy__C.TGS_Prior_PolicyNumber__c = "Prior Policy Number";
+            //tGS_Quote_Policy__C.TGS_Bundle_PolicyNumber__c = "Next Policy Number"; ///// need to confirm the salesforce object name ?
 
-            SaveResult[] insertResults = sfdcBinding.create(new sObject[] { tGS_Quote_Policy__C });
+            //SaveResult[] insertResults = sfdcBinding.create(new sObject[] { tGS_Quote_Policy__C });
 
-            for (int i = 0; i < insertResults.Length; i++)
-            {
-                if (insertResults[i].success)
-                {
-                    Console.WriteLine(string.Concat("Successfully created ID: ", insertResults[i].id));
-                }
-                else
-                {
-                    Console.WriteLine(string.Concat("Error: could not create sobject for array element ", i, "."));
-                    Console.WriteLine(string.Concat("The error reported was: ", insertResults[i].errors[0].message, "\n"));
-                }
-            }
+            //for (int i = 0; i < insertResults.Length; i++)
+            //{
+            //    if (insertResults[i].success)
+            //    {
+            //        Console.WriteLine(string.Concat("Successfully created ID: ", insertResults[i].id));
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine(string.Concat("Error: could not create sobject for array element ", i, "."));
+            //        Console.WriteLine(string.Concat("The error reported was: ", insertResults[i].errors[0].message, "\n"));
+            //    }
+            //}
 
-            //Code to update the record by fetching the values from salesforce
-            QueryResult queryResult = null;
-            string SOQL = string.Format("select TGS_Billing_Frequency__c, Type_of_Billing__c from TGS_Quote_Policy__c WHERE TGS_Policy_Number__c = '{0}'", "Policy_Number");
-            queryResult = sfdcBinding.query(SOQL);
-            //update
+            ////Code to update the record by fetching the values from salesforce
+            //QueryResult queryResult = null;
+            //string SOQL = string.Format("select TGS_Billing_Frequency__c, Type_of_Billing__c from TGS_Quote_Policy__c WHERE TGS_Policy_Number__c = '{0}'", "Policy_Number");
+            //queryResult = sfdcBinding.query(SOQL);
+            ////update
 
-            if (queryResult.size > 0)
-            {
-                for (int i = 0; i < queryResult.records.Length; i++)
-                {
-                    var tGS_Quote_Policy__c_1 = (com.salesforce.enterprise.TGS_Quote_Policy__c)queryResult.records[i];
-                    tGS_Quote_Policy__c_1.TGS_Account__r = account;
-                    tGS_Quote_Policy__c_1.TGS_Billing_Frequency__c = "";
-                    tGS_Quote_Policy__c_1.Type_of_Billing__c = "";
-                    SaveResult[] UpdateResults = sfdcBinding.update(new sObject[] { tGS_Quote_Policy__c_1 });
+            //if (queryResult.size > 0)
+            //{
+            //    for (int i = 0; i < queryResult.records.Length; i++)
+            //    {
+            //        var tGS_Quote_Policy__c_1 = (com.salesforce.enterprise.TGS_Quote_Policy__c)queryResult.records[i];
+            //        tGS_Quote_Policy__c_1.TGS_Account__r = account;
+            //        tGS_Quote_Policy__c_1.TGS_Billing_Frequency__c = "";
+            //        tGS_Quote_Policy__c_1.Type_of_Billing__c = "";
+            //        SaveResult[] UpdateResults = sfdcBinding.update(new sObject[] { tGS_Quote_Policy__c_1 });
 
-                    for (int j = 0; j < UpdateResults.Length; i++)
-                    {
-                        if (insertResults[i].success)
-                        {
-                            Console.WriteLine(string.Concat("Successfully Updated ID: ", UpdateResults[j].id));
-                        }
-                        else
-                        {
-                            Console.WriteLine(string.Concat("Error: could not create sobject for array element ", j, "."));
-                            Console.WriteLine(string.Concat("The error reported was: ", UpdateResults[j].errors[0].message, "\n"));
-                        }
-                    }
-                }
-            }
+            //        for (int j = 0; j < UpdateResults.Length; i++)
+            //        {
+            //            if (insertResults[i].success)
+            //            {
+            //                Console.WriteLine(string.Concat("Successfully Updated ID: ", UpdateResults[j].id));
+            //            }
+            //            else
+            //            {
+            //                Console.WriteLine(string.Concat("Error: could not create sobject for array element ", j, "."));
+            //                Console.WriteLine(string.Concat("The error reported was: ", UpdateResults[j].errors[0].message, "\n"));
+            //            }
+            //        }
+            //    }
+            //}
         }
 
         #endregion
@@ -894,7 +1037,7 @@ namespace swyfftAuto
 
                             // TGSIStatus TO DO (Cancel)
 
-                            SaveSalesforceDetails(policy, Process.Update);
+                            ConnectSalesforceDetails(policy, Process.Update);
 
                             //delete file from temporary folder
                             si.deletefiles();
