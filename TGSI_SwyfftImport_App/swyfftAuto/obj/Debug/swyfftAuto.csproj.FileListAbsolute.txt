@@ -234,3 +234,35 @@ D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.csproj.Core
 D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.csproj.CopyComplete
 D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.exe
 D:\TGS\Sprint5\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.pdb
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\swyfftAuto.exe.config
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\swyfftAuto.exe
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\swyfftAuto.pdb
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Bitbucket.Net.dll
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\EntityFramework.dll
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\EntityFramework.SqlServer.dll
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Flurl.dll
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Flurl.Http.dll
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\itextsharp.dll
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Newtonsoft.Json.dll
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Salesforce.Common.dll
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Salesforce.Force.dll
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\System.Net.Http.Extensions.dll
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\System.Net.Http.Primitives.dll
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\WebDriver.dll
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\WebDriver.Support.dll
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\EntityFramework.xml
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\EntityFramework.SqlServer.xml
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Flurl.xml
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Flurl.Http.xml
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\itextsharp.xml
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\Newtonsoft.Json.xml
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\System.Net.Http.Extensions.xml
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\System.Net.Http.Primitives.xml
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\WebDriver.xml
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\bin\Debug\WebDriver.Support.xml
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.csproj.App.config
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.csprojAssemblyReference.cache
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.csproj.CoreCompileInputs.cache
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.csproj.CopyComplete
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.exe
+D:\The Go Solutions\Sprint 5_V1\TGSI_SwyfftImport_App\swyfftAuto\obj\Debug\swyfftAuto.pdb
