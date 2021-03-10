@@ -11,7 +11,6 @@ namespace swyfftAuto.Model
         public int RecID { get; set; }
         public string Address { get; set; }
         public decimal Amount { get; set; }
-
         public string CustName { get; set; }
         public DateTime? EftDate { get; set; }
         public string Payment { get; set; }

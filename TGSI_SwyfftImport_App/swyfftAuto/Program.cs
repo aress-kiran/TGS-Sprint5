@@ -26,10 +26,10 @@ namespace swyfftAuto
             {
                 Automation AT = new Automation();
                 AT.ScanAddressInWeb();
-
             }
             catch (Exception ex)
             {
+                Utility.SendMail("Swyfft Import Error  --> ", ex.Message);
                 Log.Write("It is main program ---" + ex.Message + "  | " + ex.InnerException + " |  " + ex.StackTrace);
             }
         }

@@ -2,6 +2,7 @@
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using Salesforce.Common;
+using Salesforce.Common.Models.Json;
 using Salesforce.Force;
 //using swyfftAuto.com.salesforce.enterprise;
 using swyfftAuto.Model;
@@ -10,6 +11,7 @@ using swyfftAuto.Model.SalesForceModels;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -93,6 +95,17 @@ namespace swyfftAuto
                 Thread.Sleep(1000);
                 var rowsFull = table.FindElements(By.TagName("tr"));
                 var rows = rowsFull.Where(s => s.Text.Contains(string.Concat(DateTime.Now.Month, "/", DateTime.Now.Day, "/", DateTime.Now.Year)));
+                //var rows = rowsFull.Where(s => s.Text.Contains("3/8/2021"));
+
+                if (rows.Count() < 1)
+                {
+                    string strDate = DateTime.Now.Month < 10 ? "0" + DateTime.Now.Month.ToString() : DateTime.Now.Month.ToString();
+                    strDate += DateTime.Now.Day < 10 ? "/0" + DateTime.Now.Day.ToString() : "/" + DateTime.Now.Day.ToString();
+                    strDate += DateTime.Now.Year.ToString();
+
+                    rows = rowsFull.Where(s => s.Text.Contains(strDate));
+                }
+
                 //Thread.Sleep(2000);
                 Iswyfft si = new Policy();
 
@@ -303,12 +316,12 @@ namespace swyfftAuto
                         else
                         {
                             string term = string.Empty;
-                            string priorTerm = string.Empty, policyType = string.Empty, city = string.Empty, state = string.Empty, zipCode = string.Empty;
+                            string priorTerm = string.Empty, policyType = string.Empty, city = string.Empty, state = string.Empty, street = string.Empty, zipCode = string.Empty;
                             DateTime expirationDate = new DateTime();
 
                             var invoiceDetails = cust.InvoiceText.Split('\n').ToList();
 
-                            GetInvoiceDetails(cust, ref policyType, ref city, ref zipCode, ref expirationDate, invoiceDetails);
+                            GetInvoiceDetails(cust, ref policyType, ref city, ref street, ref zipCode, ref expirationDate, invoiceDetails);
 
                             if (cust.billing_frequency == "1-Pay")
                             {
@@ -324,20 +337,10 @@ namespace swyfftAuto
                             var policyStatus = cust.StatusText.ToLower().Trim().Contains("issued") ? Status.Issued.ToString() : "";
                             policyStatus = cust.StatusText.ToLower().Trim().Contains("cancelled") ? Status.Cancelled.ToString() : "";
 
-                            var policy = GetPolicyDetails(cust, term, priorTerm, policyType, city, state, zipCode, expirationDate, policyStatus);
+                            var policy = GetPolicyDetails(cust, term, priorTerm, policyType, city, state, street, zipCode, expirationDate, policyStatus);
 
-                            // Insert record
-                            if (policyType.Trim().ToLower() == PolicyType.New.ToString().ToLower())
-                            {
-                                //SaveSalesforceDetails(policy, Process.Insert);
-                                ConnectSalesforceDetails(policy, Process.Insert);
-                            }
-                            else if (policyType.Trim().ToLower() == PolicyType.Renewal.ToString().ToLower())
-                            {
-                                //SaveSalesforceDetails(policy, Process.Update);
-                                ConnectSalesforceDetails(policy, Process.Insert);
-                            }
-
+                            ConnectSalesforceDetails(policy);
+                            
                             //delete downloaded files after saving
                             si.deletefiles();
                         }
@@ -359,7 +362,7 @@ namespace swyfftAuto
             }
         }
 
-        private void ConnectSalesforceDetails(PolicyModel policy, Process process)
+        private void ConnectSalesforceDetails(PolicyModel policy)
         {
             try
             {
@@ -386,20 +389,12 @@ namespace swyfftAuto
                 AsyncHelper.RunSync(() => auth.UsernamePasswordAsync(sfdcCustomentKey, sfdcCustomerSecret, sfdcUserName, sfdcPassword + sfdcToken, url));
                 ForceClient client = new ForceClient(auth.InstanceUrl, auth.AccessToken, "v45.0");
 
-                if (process.ToString().ToLower().Equals("insert"))
-                {
-                    Console.WriteLine("Insert");
-                    InsertSalesforceDetails(policy, client);
-                }
-                else if (process.ToString().ToLower().Equals("update"))
-                {
-                    Console.WriteLine("Update");
-                }
-
-                Console.WriteLine("Connected");
+                InsertSalesforceDetails(policy, client);
+                
             }
             catch (Exception ex)
             {
+                Utility.SendMail("Error occurred while connecting to SalesForce -> ", ex.Message);
                 Console.WriteLine(ex.Message);
             }
 
@@ -411,122 +406,184 @@ namespace swyfftAuto
 
             try
             {
+  
+                //To fetch the record Type
+                string qry = string.Format("Select Id from RecordType where Name = '{0}'", policy.RecordType);
 
-            var address = new com.salesforce.enterprise.address();
-            address.city = policy.Property.City;
-            //address.country = "country"; // Not given in the PDF
-            address.postalCode = policy.Property.Zipcode;
-            address.state = policy.Property.State;
+                var resultsRecordType = AsyncHelper.RunSync(() => client.QueryAsync<RecordType_c>(qry));
+                string recordType = resultsRecordType.Records[0].ID;
 
-            var recordType = new com.salesforce.enterprise.RecordType();
-            recordType.Name = policy.Account.RecordType; // To be confirm
 
-            var account = new com.salesforce.enterprise.Account();
+                qry = string.Format("Select Id from Account where Name = '{0}'", policy.Account.Name);
 
-            account.Name = policy.Account.Name;
-            account.BillingAddress = address;
-            account.RecordType = recordType;
+                var resultAccount = AsyncHelper.RunSync(() => client.QueryAsync<Account_s>(qry));
 
-            var contact = new com.salesforce.enterprise.Contact
-            {
-                Name = policy.Contact.Name,
-                MailingAddress = address
-                //RecordType(Insured) // Need to confirm the object name
-            };
-            
-            var tGS_Property__C = new com.salesforce.enterprise.TGS_Property__c
-            {
-                TGS_Account__r = account,
-                TGS_Property_Address_2__c = address.ToString(),
-                TGS_City__c = policy.Property.City,
-                TGS_State__c = policy.Property.State,
-                TGS_Zip_Code__c = policy.Property.Zipcode
-            };
+                var account = new Account();
 
-                //Policy
-                //Carrier
-                //var tGS_Carrier__C = new com.salesforce.enterprise.TGS_Carrier__c();
+                account = policy.Account;
 
-                //Carrier Product
-                //var tGS_CarrierProduct__C = new com.salesforce.enterprise.TGS_CarrierProduct__c();
+                string accountRecordID = string.Empty;
 
-            var tGS_Quote_Policy__C = new TGS_Quote_Policy__c
-            {
-                Name = "Test polcies",
-                //TGS_Account__r = account,
-                //TGS_Contact__r = contact,
-                //TGS_Property__r = tGS_Property__C,
-                ////TGS_Carrier__r = tGS_Carrier__C,
-                ////TGS_Carrier_Product__r = tGS_CarrierProduct__C
-                //RecordType = recordType,
-                //TGS_Product_Type__c = policy.ProductType,
-                TGS_Policy_Number__c = policy.PolicyNumber,
-                //TGS_Billing_Frequency__c = policy.BillingFrequency,
-                //Type_of_Billing__c = policy.TypeOfBilling,
-                //TGS_Billing_Method__c = policy.BillingMethod,
+                if (resultAccount.Records.Count() > 0)
+                {
+                    accountRecordID = resultAccount.Records[0].Id;
+                    var resultQry = AsyncHelper.RunSync(() => client.UpdateAsync("Account", accountRecordID, account));
+                }
+                else
+                {
+                    var resultQry = AsyncHelper.RunSync(() => client.CreateAsync("Account", account));
+                    if (resultQry.Success)
+                    {
+                        accountRecordID = resultQry.Id;
+                    }
+                }
 
-                ////need to confirm which salesforce object need to be used for Premium
-                //TGS_Net_Premium__c = Convert.ToDouble(policy.Premium), //Premium ?
-                TGS_Total_Billable_Premium__c = Convert.ToDouble(policy.Premium), //Premium ?
-                TGS_Annualized_Premium__c = Convert.ToDouble(policy.Premium), //Premium ?
-                TGS_Total_Commissionable_Premium__c = Convert.ToDouble(policy.Premium), //Premium ?
+                qry = string.Format("Select Id from Contact where FirstName = '{0}' AND LastName = '{1}'", policy.Contact.FirstName, policy.Contact.LastName);
 
-                //TGS_Policy_Type__c = policy.PolicyType,
-                TGS_Policy_Status__c = policy.Status,
-                TGS_TGSI_Status__c = policy.TGSIStatus,
-                TGS_Effective_Date__c = policy.EffectiveDate,
-                TGS_Expiration_Date__c = policy.ExpirationDate,
-                TGS_Cancellation_Date__c = policy.CancellationDate,
+                var resultContact = AsyncHelper.RunSync(() => client.QueryAsync<Contact>(qry));
 
-                //TGS_Next_Term__c = policy.Term, ///// need to confirm the salesforce object name ?
-                //TGS_RenewalTerm__c = policy.Term, ///// need to confirm the salesforce object name ?
+                string contactRecordID = string.Empty;
 
-                //TGS_Prior_PolicyNumber__c = policy.PriorPolicyNumber, ///// need to confirm the salesforce object name
-                //TGS_Bundle_PolicyNumber__c = policy.NextPolicyNumber, ///// need to confirm the salesforce object name
+                var contact = new Contact();
+                contact = policy.Contact;
 
-                
-            };
+                if (resultContact.Records.Count() > 0)
+                {
+                    contactRecordID = resultContact.Records[0].Id;
+                    var resultQry = AsyncHelper.RunSync(() => client.UpdateAsync("Contact", contactRecordID, contact));
+                }
+                else
+                {
+                    var resultQry = AsyncHelper.RunSync(() => client.CreateAsync("Contact", contact));
+                    if (resultQry.Success)
+                    {
+                        contactRecordID = resultQry.Id;
+                    }
+                }
 
-            var result = AsyncHelper.RunSync(() => client.CreateAsync("TGS_Quote_Policy__c", tGS_Quote_Policy__C));
+                var property = new Property();
 
+                property = policy.Property;
+                property.TGS_Account__c = accountRecordID;
+
+                qry = string.Format("Select Id from TGS_Property__c where Name = '{0}'", policy.Property.Name);
+
+                var resultProperty = AsyncHelper.RunSync(() => client.QueryAsync<Account_s>(qry));
+
+                string propertyRecordID = string.Empty;
+
+                if (resultProperty.Records.Count>0)
+                {
+                    propertyRecordID = resultProperty.Records[0].Id;
+                    var resultQry = AsyncHelper.RunSync(() => client.UpdateAsync("TGS_Property__c", propertyRecordID, property));
+                }
+                else
+                {
+                    var resultQry = AsyncHelper.RunSync(() => client.CreateAsync("TGS_Property__c", property));
+                    if (resultQry.Success)
+                    {
+                        propertyRecordID = resultQry.Id;
+                    }
+                }
+
+                var tGS_Quote_Policy__C = new TGS_Quote_Policy__c
+                {
+                        TGS_Account__c  = accountRecordID,
+                        TGS_Contact__c = contactRecordID,
+                        TGS_Property__c = propertyRecordID,
+                        RecordTypeId = recordType,
+                        TGS_Product_Type__c = policy.ProductType,
+                        TGS_Policy_Number__c = policy.PolicyNumber,
+                        TGS_Billing_Frequency__c = policy.BillingFrequency,
+                        Type_of_Billing__c = policy.TypeOfBilling,
+                        TGS_Billing_Method__c = policy.BillingMethod,
+                        TGS_Net_Premium__c = Convert.ToDouble(policy.Premium),
+                        TGS_Policy_Type__c = policy.PolicyType,
+                        TGS_Policy_Status__c = policy.Status,
+                        TGS_TGSI_Status__c = policy.TGSIStatus,
+                        TGS_Effective_Date__c = policy.EffectiveDate,
+                        TGS_Expiration_Date__c = policy.ExpirationDate,
+                        TGS_Cancellation_Date__c = policy.CancellationDate,
+
+                        //TGS_Next_Term__c = policy.Term, ///// need to confirm the salesforce object name ?
+                        TGS_RenewalTerm__c = policy.Term, ///// need to confirm the salesforce object name ?
+
+                };
+
+                string[] policyNumber = policy.PolicyNumber.Split('-');
+                int priorPolicyNumber = 0;
+
+                if (int.TryParse(policyNumber[policyNumber.Length - 1], out priorPolicyNumber))
+                {
+                    if (priorPolicyNumber == 0)
+                    {
+                        var result = AsyncHelper.RunSync(() => client.CreateAsync("TGS_Quote_Policy__c", tGS_Quote_Policy__C));
+                        Console.WriteLine("Quote Policy Inserted : " + result.Id + ", Policy Number" + policy.PolicyNumber);
+                    }
+                    else
+                    {
+                        priorPolicyNumber = priorPolicyNumber - 1;
+                        policyNumber[policyNumber.Length - 1] = priorPolicyNumber < 10 ? string.Concat("0", priorPolicyNumber.ToString()) : priorPolicyNumber.ToString();
+                        tGS_Quote_Policy__C.TGS_Prior_PolicyNumber__c = string.Join("-", policyNumber);
+
+                        qry = string.Format("Select Id from TGS_Quote_Policy__c where TGS_Policy_Number__c = '{0}'", policy.PolicyNumber);
+
+                        var resultQuotePolicy = AsyncHelper.RunSync(() => client.QueryAsync<Account_s>(qry));
+
+                        string quotePolicyRecordId = string.Empty;
+
+                        if (resultQuotePolicy.Records.Count > 0)
+                        {
+                            quotePolicyRecordId = resultQuotePolicy.Records[0].Id;
+                            var resultQry = AsyncHelper.RunSync(() => client.UpdateAsync("TGS_Quote_Policy__c", quotePolicyRecordId, tGS_Quote_Policy__C));
+                            Console.WriteLine("Quote Policy Updated : " + quotePolicyRecordId + ", Policy Number" + policy.PolicyNumber);
+                        }
+                        else
+                        {
+                            var result = AsyncHelper.RunSync(() => client.CreateAsync("TGS_Quote_Policy__c", tGS_Quote_Policy__C));
+                            Console.WriteLine("Quote Policy Inserted : " + result.Id + ", Policy Number" + policy.PolicyNumber);
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
+                Utility.SendMail("Error occurred Inserting / Updating to SalesForce -> ", ex.Message);
                 Console.WriteLine(ex.Message);
             }
         }
 
-        private static PolicyModel GetPolicyDetails(SwyfftRawData cust, string term, string priorTerm, string policyType, string city, string state, string zipCode, DateTime expirationDate, string policyStatus)
+        private static PolicyModel GetPolicyDetails(SwyfftRawData cust, string term, string priorTerm, string policyType, string city, string state, string street, string zipCode, DateTime expirationDate, string policyStatus)
         {
+            string Name = cust.CustName;
+            string FirstName = Name.Split(' ')[0];
+            string LastName = Name.Split(' ').Length > 1 ? Name.Split(' ')[1] : string.Empty;
+
             var policy = new PolicyModel()
             {
-                Account = new Model.SalesForceModels.Account()
+                Account = new Account()
                 {
-                    Name = cust.CustName,
-                    BillingAddress = cust.Address,
-                    BillingCountry = null,
-                    RecordType = Model.Enums.RecordType.Person.ToString()
+                    Name = Name,
+                    BillingCity = city,
+                    BillingState = state,
+                    BillingPostalCode = zipCode,
+                    BillingStreet = street
                 },
-                Contact = new Model.SalesForceModels.Contact()
+                Contact = new Contact()
                 {
-                    Name = cust.CustName,
-                    MailingAddress = null,
-                    MailingAddressWithCountry = null,
-                    RecordType = Model.Enums.RecordType.Insured.ToString()
+                    FirstName = FirstName,
+                    LastName = LastName,
+                    MailingCity = city,
+                    MailingCountry = null,
+                    MailingPostalCode = zipCode,
+                    MailingState = state
                 },
                 Property = new Property()
                 {
-                    Account = new Model.SalesForceModels.Account()
-                    {
-                        Name = cust.CustName,
-                        BillingAddress = cust.Address,
-                        BillingCountry = null,
-                        RecordType = Model.Enums.RecordType.Person.ToString()
-                    },
-                    Address = cust.Address,
-                    City = city,
-                    State = state,
-                    Zipcode = zipCode
+                    Name = Name,
+                    TGS_City__c = city,
+                    TGS_State__c = state,
+                    TGS_Zip_Code__c = zipCode
                 },
                 Carrier = "Swyfft",
                 CarrierProduct = "Swyfft-Home",
@@ -576,7 +633,7 @@ namespace swyfftAuto
             return priorTerm;
         }
 
-        private static void GetInvoiceDetails(SwyfftRawData cust, ref string policyType, ref string city, ref string zipCode, ref DateTime expirationDate, List<string> invoiceDetails)
+        private static void GetInvoiceDetails(SwyfftRawData cust, ref string policyType, ref string city, ref string street, ref string zipCode, ref DateTime expirationDate, List<string> invoiceDetails)
         {
             if (invoiceDetails != null)
             {
@@ -588,8 +645,16 @@ namespace swyfftAuto
 
                     if (!string.IsNullOrEmpty(policyPeriod))
                     {
-                        cust.EftDate = Convert.ToDateTime(policyPeriod.Split('-')[0].Trim());
-                        expirationDate = Convert.ToDateTime(policyPeriod.Split('-')[1].Trim());
+                        try
+                        {
+                            cust.EftDate = Convert.ToDateTime(policyPeriod.Split('-')[0].Trim());
+                            expirationDate = Convert.ToDateTime(policyPeriod.Split('-')[1].Trim());
+                        }
+                        catch (Exception)
+                        {
+                            cust.EftDate = ConvertDate(policyPeriod.Split('-')[0].Trim());
+                            expirationDate = ConvertDate(policyPeriod.Split('-')[1].Trim());
+                        }                        
                     }
                 }
 
@@ -598,6 +663,10 @@ namespace swyfftAuto
                 if (policyTypeData != null)
                 {
                     policyType = policyTypeData.Split(':')[1].Trim();
+                    if (policyType.ToLower().Equals("new"))
+                    {
+                        policyType = "New Business";
+                    }
                 }
 
                 var locationData = invoiceDetails.FirstOrDefault(x => x.Trim().ToLower().StartsWith("location"));
@@ -608,6 +677,7 @@ namespace swyfftAuto
 
                     if (locationDetails.Length >= 1)
                     {
+                        street = locationDetails[1].Split(',')[0].Trim();
                         city = locationDetails[1].Split(',')[1].Trim();
                     }
 
@@ -617,6 +687,16 @@ namespace swyfftAuto
                     }
                 }
             }
+        }
+
+        private static DateTime ConvertDate(string strDate)
+        {
+            string[] lstDate = strDate.Split('/');
+            if (lstDate.Count() < 3)
+            {
+                lstDate = strDate.Split('-');
+            }
+            return DateTime.Parse(string.Concat(lstDate[1],"/",lstDate[0],"/" ,lstDate[2]));
         }
 
         //Code to connect to sales force via WSDl
@@ -781,6 +861,15 @@ namespace swyfftAuto
                 
                 var rowsFull = table.FindElements(By.TagName("tr"));
                 var rows = rowsFull.Where(s => s.Text.Contains(string.Concat(DateTime.Now.Month, "/", DateTime.Now.Day, "/", DateTime.Now.Year)));
+                //var rows = rowsFull.Where(s => s.Text.Contains("2/15/2021"));
+                if (rows.Count() < 1)
+                {
+                    string strDate = DateTime.Now.Month < 10 ? "0" + DateTime.Now.Month.ToString() : DateTime.Now.Month.ToString();
+                    strDate += DateTime.Now.Day < 10 ? "/0" + DateTime.Now.Day.ToString() : "/" + DateTime.Now.Day.ToString();
+                    strDate += DateTime.Now.Year.ToString();
+
+                    rows = rowsFull.Where(s => s.Text.Contains(strDate));
+                }
 
                 //Thread.Sleep(2000);
                 Iswyfft si = new Policy();
@@ -852,7 +941,16 @@ namespace swyfftAuto
                         }
                         if (n == 4)
                         {
-                            cust.EftDate = Convert.ToDateTime(td.Text.ToString());
+
+                            DateTime dateValue;
+
+                            CultureInfo enUS = new CultureInfo("en-US");
+
+                            string[] strDate = td.Text.ToString().Split('/');
+
+                            DateTime.TryParse(string.Concat(strDate[1], "/", strDate[0], "/", strDate[2]), out dateValue);
+                                
+                            cust.EftDate = dateValue;
                         }
                         if (n == 5)
                         {
@@ -1004,12 +1102,12 @@ namespace swyfftAuto
                         if (cust.StatusModifiedDate.Value.Date == DateTime.Now.Date)
                         {
                             //insert data in salesforce
-                            string term = string.Empty, priorTerm = string.Empty, policyType = string.Empty, city = string.Empty, state = string.Empty, zipCode = string.Empty;
+                            string term = string.Empty, priorTerm = string.Empty, policyType = string.Empty, city = string.Empty, state = string.Empty, street = string.Empty, zipCode = string.Empty;
                             DateTime expirationDate = new DateTime();
 
                             var invoiceDetails = cust.InvoiceText.Split('\n').ToList();
 
-                            GetInvoiceDetails(cust, ref policyType, ref city, ref zipCode, ref expirationDate, invoiceDetails);
+                            GetInvoiceDetails(cust, ref policyType, ref city,ref street, ref zipCode, ref expirationDate, invoiceDetails);
 
                             // to be confirmed
                             if (cust.billing_frequency == "1-Pay")
@@ -1025,8 +1123,9 @@ namespace swyfftAuto
 
                             var policyStatus = cust.StatusText.ToLower().Trim().Contains("issued") ? Status.Issued.ToString() : "";
                             policyStatus = cust.StatusText.ToLower().Trim().Contains("cancelled") ? Status.Cancelled.ToString() : "";
+                            
 
-                            var policy = GetPolicyDetails(cust, term, priorTerm, policyType, city, state, zipCode, expirationDate, policyStatus);
+                            var policy = GetPolicyDetails(cust, term, priorTerm, policyType, city, state, street, zipCode, expirationDate, policyStatus);
 
                             // Update record
                             if (policyStatus == Status.Cancelled.ToString())
@@ -1037,7 +1136,7 @@ namespace swyfftAuto
 
                             // TGSIStatus TO DO (Cancel)
 
-                            ConnectSalesforceDetails(policy, Process.Update);
+                            ConnectSalesforceDetails(policy);
 
                             //delete file from temporary folder
                             si.deletefiles();
@@ -1049,7 +1148,7 @@ namespace swyfftAuto
             }
             catch (Exception ex)
             {
-                Utility.SendMail("Swyfft Import Error", ex + "");
+                Utility.SendMail("Swyfft Import Error ScanEndoredTab", ex + "");
                 Log.Write("It is Error as ---" + ex.Message + "  | " + ex.InnerException + " |  " + ex.StackTrace + " |  " + ex);
             }
         }
