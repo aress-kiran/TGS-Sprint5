@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using Newtonsoft.Json;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using Salesforce.Common;
@@ -12,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -288,6 +290,7 @@ namespace swyfftAuto
                     if (flag)
                     {
                         var downloadedFiles = si.readfiles();
+                        var contentVersions = new List<ContentVersion>();
 
                         foreach (var item in downloadedFiles)
                         {
@@ -296,16 +299,25 @@ namespace swyfftAuto
                                 string pathfile = ConfigurationManager.AppSettings.Get("sourcePath").ToString() + "\\" + item;
                                 cust.Invoice = item;
                                 cust.InvoiceText = PdfParse.ExtractTextFromPdf(pathfile);
+
+                                contentVersions.Add(GetFileDataToSend(pathfile, item));
                             }
+
                             if (item.IndexOf("Payment") >= 0)
                             {
                                 cust.Payment = item;
                                 string pathfile = ConfigurationManager.AppSettings.Get("sourcePath").ToString() + "\\" + item;
                                 cust.StatusText = PdfParse.ExtractTextFromPdf(pathfile);
+
+                                contentVersions.Add(GetFileDataToSend(pathfile, item));
                             }
+
                             if (item.IndexOf("Policy") > 0)
                             {
                                 cust.Policy = item;
+                                string pathfile = ConfigurationManager.AppSettings.Get("sourcePath").ToString() + "\\" + item;
+
+                                contentVersions.Add(GetFileDataToSend(pathfile, item));
                             }
                         }
 
@@ -339,8 +351,8 @@ namespace swyfftAuto
 
                             var policy = GetPolicyDetails(cust, term, priorTerm, policyType, city, state, street, zipCode, expirationDate, policyStatus);
 
-                            ConnectSalesforceDetails(policy);
-                            
+                            ConnectSalesforceDetails(policy, contentVersions);
+
                             //delete downloaded files after saving
                             si.deletefiles();
                         }
@@ -362,7 +374,22 @@ namespace swyfftAuto
             }
         }
 
-        private void ConnectSalesforceDetails(PolicyModel policy)
+        public ContentVersion GetFileDataToSend(string filePath, string fileName)
+        {
+            var title = Path.GetFileNameWithoutExtension(filePath);
+            byte[] pdfBytes = File.ReadAllBytes(filePath);
+            string pdfBase64 = Convert.ToBase64String(pdfBytes);
+
+            return new ContentVersion
+            {
+                Title = title,
+                PathOnClient = fileName,
+                ContentLocation = "S",
+                VersionData = pdfBase64
+            };
+        }
+
+        private void ConnectSalesforceDetails(PolicyModel policy, List<ContentVersion> contentVersions)
         {
             try
             {
@@ -389,30 +416,25 @@ namespace swyfftAuto
                 AsyncHelper.RunSync(() => auth.UsernamePasswordAsync(sfdcCustomentKey, sfdcCustomerSecret, sfdcUserName, sfdcPassword + sfdcToken, url));
                 ForceClient client = new ForceClient(auth.InstanceUrl, auth.AccessToken, "v45.0");
 
-                InsertSalesforceDetails(policy, client);
-                
+                InsertSalesforceDetails(policy, client, contentVersions);
+
             }
             catch (Exception ex)
             {
                 Utility.SendMail("Error occurred while connecting to SalesForce -> ", ex.Message);
                 Console.WriteLine(ex.Message);
             }
-
-            
         }
 
-        private void InsertSalesforceDetails(PolicyModel policy, ForceClient client)
+        private void InsertSalesforceDetails(PolicyModel policy, ForceClient client, List<ContentVersion> contentVersions)
         {
-
             try
             {
-  
                 //To fetch the record Type
                 string qry = string.Format("Select Id from RecordType where Name = '{0}'", policy.RecordType);
 
                 var resultsRecordType = AsyncHelper.RunSync(() => client.QueryAsync<RecordType_c>(qry));
                 string recordType = resultsRecordType.Records[0].ID;
-
 
                 qry = string.Format("Select Id from Account where Name = '{0}'", policy.Account.Name);
 
@@ -472,7 +494,7 @@ namespace swyfftAuto
 
                 string propertyRecordID = string.Empty;
 
-                if (resultProperty.Records.Count>0)
+                if (resultProperty.Records.Count > 0)
                 {
                     propertyRecordID = resultProperty.Records[0].Id;
                     var resultQry = AsyncHelper.RunSync(() => client.UpdateAsync("TGS_Property__c", propertyRecordID, property));
@@ -488,30 +510,31 @@ namespace swyfftAuto
 
                 var tGS_Quote_Policy__C = new TGS_Quote_Policy__c
                 {
-                        TGS_Account__c  = accountRecordID,
-                        TGS_Contact__c = contactRecordID,
-                        TGS_Property__c = propertyRecordID,
-                        RecordTypeId = recordType,
-                        TGS_Product_Type__c = policy.ProductType,
-                        TGS_Policy_Number__c = policy.PolicyNumber,
-                        TGS_Billing_Frequency__c = policy.BillingFrequency,
-                        Type_of_Billing__c = policy.TypeOfBilling,
-                        TGS_Billing_Method__c = policy.BillingMethod,
-                        TGS_Net_Premium__c = Convert.ToDouble(policy.Premium),
-                        TGS_Policy_Type__c = policy.PolicyType,
-                        TGS_Policy_Status__c = policy.Status,
-                        TGS_TGSI_Status__c = policy.TGSIStatus,
-                        TGS_Effective_Date__c = policy.EffectiveDate,
-                        TGS_Expiration_Date__c = policy.ExpirationDate,
-                        TGS_Cancellation_Date__c = policy.CancellationDate,
+                    TGS_Account__c = accountRecordID,
+                    TGS_Contact__c = contactRecordID,
+                    TGS_Property__c = propertyRecordID,
+                    RecordTypeId = recordType,
+                    TGS_Product_Type__c = policy.ProductType,
+                    TGS_Policy_Number__c = policy.PolicyNumber,
+                    TGS_Billing_Frequency__c = policy.BillingFrequency,
+                    Type_of_Billing__c = policy.TypeOfBilling,
+                    TGS_Billing_Method__c = policy.BillingMethod,
+                    TGS_Net_Premium__c = Convert.ToDouble(policy.Premium),
+                    TGS_Policy_Type__c = policy.PolicyType,
+                    TGS_Policy_Status__c = policy.Status,
+                    TGS_TGSI_Status__c = policy.TGSIStatus,
+                    TGS_Effective_Date__c = policy.EffectiveDate,
+                    TGS_Expiration_Date__c = policy.ExpirationDate,
+                    TGS_Cancellation_Date__c = policy.CancellationDate,
 
-                        //TGS_Next_Term__c = policy.Term, ///// need to confirm the salesforce object name ?
-                        TGS_RenewalTerm__c = policy.Term, ///// need to confirm the salesforce object name ?
+                    //TGS_Next_Term__c = policy.Term, ///// need to confirm the salesforce object name ?
+                    TGS_RenewalTerm__c = policy.Term, ///// need to confirm the salesforce object name ?
 
                 };
 
                 string[] policyNumber = policy.PolicyNumber.Split('-');
                 int priorPolicyNumber = 0;
+                string policyId = string.Empty;
 
                 if (int.TryParse(policyNumber[policyNumber.Length - 1], out priorPolicyNumber))
                 {
@@ -536,14 +559,30 @@ namespace swyfftAuto
                         {
                             quotePolicyRecordId = resultQuotePolicy.Records[0].Id;
                             var resultQry = AsyncHelper.RunSync(() => client.UpdateAsync("TGS_Quote_Policy__c", quotePolicyRecordId, tGS_Quote_Policy__C));
+                            policyId = quotePolicyRecordId;
                             Console.WriteLine("Quote Policy Updated : " + quotePolicyRecordId + ", Policy Number" + policy.PolicyNumber);
                         }
                         else
                         {
                             var result = AsyncHelper.RunSync(() => client.CreateAsync("TGS_Quote_Policy__c", tGS_Quote_Policy__C));
+                            policyId = result.Id;
                             Console.WriteLine("Quote Policy Inserted : " + result.Id + ", Policy Number" + policy.PolicyNumber);
                         }
                     }
+
+                    #region " File - Content Version "                
+                    string contentVersionID = string.Empty;
+
+                    foreach (var contentVersion in contentVersions)
+                    {
+                        contentVersion.FirstPublishLocationId = policyId;
+                        var contentQry = AsyncHelper.RunSync(() => client.CreateAsync("ContentVersion", contentVersion));
+
+                        if (contentQry.Success)
+                            Console.WriteLine("Content Version Inserted : " + contentQry.Id + ", Policy Number" + policy.PolicyNumber);
+                    }
+
+                    #endregion
                 }
             }
             catch (Exception ex)
@@ -654,7 +693,7 @@ namespace swyfftAuto
                         {
                             cust.EftDate = ConvertDate(policyPeriod.Split('-')[0].Trim());
                             expirationDate = ConvertDate(policyPeriod.Split('-')[1].Trim());
-                        }                        
+                        }
                     }
                 }
 
@@ -696,7 +735,7 @@ namespace swyfftAuto
             {
                 lstDate = strDate.Split('-');
             }
-            return DateTime.Parse(string.Concat(lstDate[1],"/",lstDate[0],"/" ,lstDate[2]));
+            return DateTime.Parse(string.Concat(lstDate[1], "/", lstDate[0], "/", lstDate[2]));
         }
 
         //Code to connect to sales force via WSDl
@@ -781,7 +820,7 @@ namespace swyfftAuto
             //tGS_Quote_Policy__C.TGS_Policy_Status__c = policy.Status;
             //tGS_Quote_Policy__C.TGS_TGSI_Status__c = policy.TGSIStatus;
 
-            
+
             //tGS_Quote_Policy__C.TGS_Effective_Date__c = policy.EffectiveDate;
 
             //tGS_Quote_Policy__C.TGS_Expiration_Date__c = policy.ExpirationDate;
@@ -858,7 +897,7 @@ namespace swyfftAuto
                 //Log.Write("It is main program ---" + adr.RecID);
                 var table = driver.FindElement(By.TagName("table"));
                 Thread.Sleep(1000);
-                
+
                 var rowsFull = table.FindElements(By.TagName("tr"));
                 var rows = rowsFull.Where(s => s.Text.Contains(string.Concat(DateTime.Now.Month, "/", DateTime.Now.Day, "/", DateTime.Now.Year)));
                 //var rows = rowsFull.Where(s => s.Text.Contains("2/15/2021"));
@@ -949,7 +988,7 @@ namespace swyfftAuto
                             string[] strDate = td.Text.ToString().Split('/');
 
                             DateTime.TryParse(string.Concat(strDate[1], "/", strDate[0], "/", strDate[2]), out dateValue);
-                                
+
                             cust.EftDate = dateValue;
                         }
                         if (n == 5)
@@ -1058,9 +1097,8 @@ namespace swyfftAuto
 
                     if (flag)
                     {
-
                         var lst = si.readfiles();
-
+                        var contentVersions = new List<ContentVersion>();
                         foreach (var item in lst)
                         {
                             if (item.IndexOf("Invoice") >= 0)
@@ -1068,6 +1106,8 @@ namespace swyfftAuto
                                 string pathfile = ConfigurationManager.AppSettings.Get("sourcePath").ToString() + "\\" + item;
                                 cust.Invoice = item;
                                 cust.InvoiceText = PdfParse.ExtractTextFromPdf(pathfile);
+
+                                contentVersions.Add(GetFileDataToSend(pathfile, item));
                             }
 
                             if (item.IndexOf("Payment") >= 0)
@@ -1091,6 +1131,8 @@ namespace swyfftAuto
                                     cust.StatusText = newStatusText.Trim();
                                     cust.StatusModifiedDate = DateTime.Now;
                                 }
+
+                                contentVersions.Add(GetFileDataToSend(pathfile, item));
                             }
                         }
 
@@ -1107,7 +1149,7 @@ namespace swyfftAuto
 
                             var invoiceDetails = cust.InvoiceText.Split('\n').ToList();
 
-                            GetInvoiceDetails(cust, ref policyType, ref city,ref street, ref zipCode, ref expirationDate, invoiceDetails);
+                            GetInvoiceDetails(cust, ref policyType, ref city, ref street, ref zipCode, ref expirationDate, invoiceDetails);
 
                             // to be confirmed
                             if (cust.billing_frequency == "1-Pay")
@@ -1123,7 +1165,7 @@ namespace swyfftAuto
 
                             var policyStatus = cust.StatusText.ToLower().Trim().Contains("issued") ? Status.Issued.ToString() : "";
                             policyStatus = cust.StatusText.ToLower().Trim().Contains("cancelled") ? Status.Cancelled.ToString() : "";
-                            
+
 
                             var policy = GetPolicyDetails(cust, term, priorTerm, policyType, city, state, street, zipCode, expirationDate, policyStatus);
 
@@ -1136,7 +1178,7 @@ namespace swyfftAuto
 
                             // TGSIStatus TO DO (Cancel)
 
-                            ConnectSalesforceDetails(policy);
+                            ConnectSalesforceDetails(policy, contentVersions);
 
                             //delete file from temporary folder
                             si.deletefiles();

@@ -112,6 +112,7 @@
     <Compile Include="Log.cs" />
     <Compile Include="Model\Customer.cs" />
     <Compile Include="Model\Enums\SalesforceEnum.cs" />
+    <Compile Include="Model\ContentVersion.cs" />
     <Compile Include="Model\SalesforceModel.cs" />
     <Compile Include="Model\SalesForceModels\Account.cs" />
     <Compile Include="Model\SalesForceModels\Contact.cs" />

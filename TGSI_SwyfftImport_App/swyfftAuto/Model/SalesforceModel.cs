@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using swyfftAuto.com.salesforce.enterprise;
+﻿using swyfftAuto.com.salesforce.enterprise;
+using System;
 
 namespace swyfftAuto.Model
 {
